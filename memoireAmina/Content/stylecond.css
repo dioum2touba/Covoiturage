@@ -1,0 +1,152 @@
+html,body{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+#entete{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 60%; 
+    position: relative;
+    overflow: hidden;
+    background-color: transparent;
+    z-index: 1;
+}
+.image_entete{
+    left: 0;
+    width: 100%;
+    height:100%;
+    position: absolute;
+    z-index: 0;
+    object-fit: cover;
+    object-position: center;
+}
+.nomsite{
+  font-size: 30px;
+  text-align: left;
+  margin-left: 2%;
+ /* margin: 0px;*/
+  padding-top:0px;
+  color: white;
+  position: relative;
+  font-family: Scriptina,  "sakkal Majalla","Script MT Bold";
+  display: inline-block;
+}
+#blanc
+{
+    z-index: 0;
+    position: absolute;
+}
+#formrecherche{
+    position: relative;
+    border:1px solid #FFF;
+    border-left: none;
+    border-right: none;
+    background-color:rgb(000,000,000,0.2);
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    min-height: 1%;
+    text-align: center;
+    padding: 2%;
+    margin-top: 11%;
+
+}
+#motcle{
+    height: 30px;width: 300px;
+    border:none;padding-left: 2px;
+}
+.btnsubmit{
+    height: 30px;width: 300px;
+    border:none;
+    background-color: #53af57;
+    color:#FFF; 
+}
+.btnsubmit:hover{
+    height: 30px;width: 300px;
+    border:none;
+    background-color: white;
+    color:#53af57; 
+}
+#trucs{
+    margin-top:0px;
+    position: relative;
+    background-color:rgb(000,000,000,0.2);
+    width: 100%;
+ /*   margin-left: 0;
+    margin-left: 0%;
+    
+    min-height: 1%;
+    text-align: center;
+    padding-top: 1px;
+    display: inline-block;
+    float: top;*/
+}
+.options{
+    text-align: right;
+    color: white;
+    font-family: serif;
+    margin-left: 5%;
+    padding-left: 20px;
+}
+.options:hover{
+    text-align: right;
+    color: white;
+    font-family: serif;
+    margin-left: 2%;
+    padding:5px;
+    border:1px solid gray;
+    border-radius: 5px;
+    background-color:#53af57;
+    border:none;
+}
+
+#offres{
+    display: inline-block;
+    float: left;
+    margin-left: 40%;
+}
+a{
+    text-decoration: none;
+}
+#list_deroul {
+    font-family: serif; 
+    text-align: right; 
+    color: white;
+    margin-left: auto;
+    padding-left: 10%; 
+    display: inline-block;
+    position: relative;
+    z-index: 2;}
+#list_deroul ul ul {
+    display: none; 
+    position: absolute; 
+    margin: 0px; 
+    padding: 0px;
+}
+#list_deroul li {
+    list-style-type: none; 
+    position: relative; 
+    width: 100px; 
+    padding: 2%;  
+    margin: 0px;
+}
+#list_deroul li:hover  {
+    background-color: #53af57; 
+    text-align: center;
+    color: white;
+    font-family: serif;
+    margin-left: 15%;
+    border:1px solid gray;
+    border-radius: 9px;
+    /*border: none;*/
+}
+#list_deroul li a {
+    text-decoration:none; 
+    color: black;
+}
+#list_deroul li:hover ul.sous_liste {
+    display: block;
+}

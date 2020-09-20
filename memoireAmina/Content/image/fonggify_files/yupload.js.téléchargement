@@ -1,0 +1,71 @@
+(function($){
+	$.fn.yUpload = function(arg){
+		return new yUpload(this, arg);
+	};
+})(jQuery);
+function yUpload(t, a)
+{
+	this.submitUpload = function(){
+		this.t.find('.yUploadInput').css({'display':'none'});
+		this.t.find('.yUploadLoading').css({'display':'inline-block'});
+		$('#'+this.inputID).attr({'name': 'uploadFile'});
+		
+		this.frameName = 'yUpload_frame_'+Math.floor((Math.random()*10000000000));
+		this.j.append('<iframe src="javascript:return false;" name="'+this.frameName+'" />');
+		this.frame = this.j.children('iframe');
+		this.frame.css({'display': 'none'});
+		
+		this.j.append('<form method="post" enctype="multipart/form-data" action="'+this.action+'" target="'+this.frameName+'"></form>');
+		this.j.children('form').append($('#'+this.inputID)).submit();
+			
+		this.frame.bind('load', {'th' : this}, function(e){
+			th = e.data.th;
+			response = jQuery.parseJSON(th.frame.contents().text());
+			th.t.find('.yUploadInput').children('.button').append($('#'+th.inputID));
+			th.j.empty();
+			
+			$('#'+th.inputID).attr({'name': ''}).val('');
+			
+			if(response.state=='success')
+			{
+				th.t.find('.yUploadLoading').fadeOut(function(){
+					th.t.find('.yUploaded').fadeIn(function(){
+						setTimeout(function(){
+							th.t.find('.yUploaded').fadeOut(function(){
+								th.t.find('.yUploadInput').fadeIn();
+							});
+						}, 700);
+					});
+				});
+				th.t.children('input[type=text]').val(response.url).change();
+			}
+			else
+			{
+				//yDialog('Error', 'error', response.message);
+				th.t.find('.yUploadLoading').fadeOut(function(){
+					th.t.find('.yUploadInput').fadeIn();
+				});
+				yDialog('Error', response.errorMsg);
+			}
+		});
+	};
+	this.t = t;
+	this.t.find('.yUploadInput .button').boxShadow('#000000', 0, 0, 0, 'outset', 0, 0);
+	this.j = $('<div class="yUploadForms"></div>').appendTo(document.body);
+	this.frame = null;
+	this.form = null;
+	
+	this.action = 'content/yUpload.php';
+	
+	this.frameName = '';
+	this.inputID = 'yUpload_input_'+Math.floor((Math.random()*10000000000));
+	this.t.find('.yUploadInput input:file').attr('id', this.inputID).bind('change', {'th': this}, function(e){
+		e.data.th.submitUpload();
+	});
+	return this;
+}
+$(document).ready(function(){
+	$('.yUpload').each(function(){
+		$(this).yUpload();
+	});
+});

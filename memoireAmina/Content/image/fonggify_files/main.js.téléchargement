@@ -1,0 +1,1140 @@
+
+
+
+var designID = 6;
+
+$(document).ready(function(){
+	//Main Design
+	$('.menu_icon').on('click', function(){
+		$('nav').toggleClass('open');
+	});
+
+	$('.tabs_menu span').click(function(){
+		var id = $(this).attr('id');
+		id = id.substr(8, (id.length-8));
+		switch_tab(id);
+	});
+	//Menu
+	$('table').each(function (){
+		$(this).find('tr:first').children('td, th').css('border-top', '0px');
+		$(this).find('tr:last').children('td, th').css('border-bottom', '0px');
+	});
+	$('.tools a').hover(function(){
+		if($(this).isChildOf('.related_tools'))
+		{
+			$(this).css('property', 0).stop(true, true).animate({'property':0.1}, {
+				'step' : function(value){$(this).css('background', 'rgba(0, 0, 0, '+(value+0.2)+')');}
+			});
+		}
+		else
+		{
+			$(this).css('property', 0).stop(true, true).animate({'property':0.3}, {
+				'step' : function(value){$(this).css('background', 'rgba(200, 200, 200, '+(value+0.5)+')');}
+			});
+		}
+	},
+	function(){
+		if($(this).isChildOf('.related_tools'))
+		{
+			$(this).css('property', 0).stop(true, true).animate({'property':0.1}, {
+				'step' : function(value){$(this).css('background', 'rgba(0, 0, 0, '+(0.1-value+0.2)+')');}
+			});
+		}
+		else
+		{
+			$(this).css('property', 0).stop(true, true).animate({'property':0.3}, {
+				'step' : function(value){$(this).css('background', 'rgba(200, 200, 200, '+(0.3-value+0.5)+')');}
+			});
+		}
+	});
+	$('nav > div').hover(function(){
+		if (getViewportWidth()>960)
+			$(this).addClass('selected');
+		/*$(this).children('.spacer').css('display', 'block');
+		$(this).children('.mnlink').css('property', 0).stop(true, true).animate({'property':0.5}, {
+			'step' : function(value){$(this).css('background', 'rgba(255, 255, 255, '+value+')');},
+			'duration' : 'fast'
+		});
+		$(this).children('.smn').stop(true, true).fadeIn('fast');
+		if($(this).hasClass('_tools')){
+			$('header').css({
+				'margin-bottom': 500
+			}, 'fast');
+			repositionSocialButtons();
+		}*/
+	},
+	function(){
+		if (getViewportWidth()>960)
+			$(this).removeClass('selected');
+		/*$(this).children('.spacer').css('display', 'none');
+		$(this).children('.mnlink').css('property', 0).stop(true, true).animate({'property':0.5}, {
+			'step' : function(value){$(this).css('background', 'rgba(255, 255, 255, '+(0.5-value)+')');}
+		});
+		$(this).children('.smn').stop(true, true).fadeOut('fast');
+		$('header').css({
+			'margin-bottom': 0
+		}, 'fast');
+		repositionSocialButtons();*/
+	});
+	$('.mnlink').on('click', function(event){
+		if (getViewportWidth()<=960 && $(this).parent().has('.smn').size()>0) {
+			event.stopPropagation();
+			$(this).parent().toggleClass('selected');
+			return false;
+		}
+	});
+	$('.st_block, .st_block_categories, .wd_block, .userBlock').hover(function(){
+		$(this).css('property', 0).stop(true, true).animate({'property':12}, {
+			'step' : function(value){$(this).borderRadius(15-value, 'top-left').borderRadius(15-value, 'bottom-right');},
+			'duration' : 'fast'
+		});
+	},
+	function(){
+		$(this).css('property', 0).stop(true, true).animate({'property':12}, {
+			'step' : function(value){$(this).borderRadius(3+value, 'top-left').borderRadius(3+value, 'bottom-right');},
+			'duration' : 'fast'
+		});
+	});
+	$('article').hover(function(){
+		$(this).css('property', 0).stop(true, true).animate({'property':0.3}, {
+			'step' : function(value){$(this).boxShadow('#000000', 0, 5, 0.3+value, 'outset', 0, 0);},
+			'duration' : 'fast'
+		});
+	},
+	function(){
+		$(this).css('property', 0).stop(true, true).animate({'property':0.3}, {
+			'step' : function(value){$(this).boxShadow('#000000', 0, 5, 0.6-value, 'outset', 0, 0);},
+			'duration' : 'fast'
+		});
+	});
+	$('.related_tools').ySlider().setSlideSize(171).setType('horizontal');
+	$('.goback').click(function(){history.back(-1);});
+	$('.clickselect').click(function(){$(this).selectContent();});
+	
+	//yPlusMinus
+	$('input.yPlusMinus').change(function(){
+		var value = noNaN(parseInt($(this).val()));
+		if($(this).hasClass('allowNegative'))
+		{
+			$(this).val(value);
+		}
+		else
+		{
+			$(this).val(Math.abs(value));
+		}
+	});
+	$('input.yPlusMinus').next().click(function(){
+		$(this).prev().val(noNaN(parseInt($(this).prev().val(), 10))+1).change();
+	});
+	$('input.yPlusMinus').prev().click(function(){
+		if($(this).next().val()>0 || $(this).next().hasClass('allowNegative'))
+		{
+			$(this).next().val(noNaN(parseInt($(this).next().val(), 10))-1).change();
+		}
+		else
+		{
+			$(this).next().val(noNaN(parseInt($(this).next().val(), 10))).change();
+		}
+	});
+	$('button.yPlus, button.yMinus').borderRadius(3).boxShadow('#000000', 0, 0, 0, 'outset', 0, 0);
+	
+	//yFonts
+	$('.yFonts select').mouseover(function(e){
+		if($(e.target).is('option'))
+		{
+			$(this).next('img.preview').css('display', 'inline').attr('src', 'http://images.webestools.com/fonts/previews/'+$(e.target).val()+'.png');
+		}
+	}).mouseout(function() {
+		$(this).next('img.preview').css('display', 'none');
+	}).change(function(){
+		$(this).nextAll('img').last().attr('src', 'http://images.webestools.com/fonts/previews/'+$(this).val()+'.png');
+	});
+	
+	//yCaptcha
+	$('.yCaptcha a').click(function(){
+		yCaptcha = $(this).parent();
+		yCaptcha.children('input').val('');
+		yCaptcha.children('img').animate({opacity: 0}, function(){
+			yCaptcha.children('div.loading').animate({opacity: 1}, function(){
+				yCaptcha.children('img').attr('src', 'yCaptcha-'+yCaptcha.children('img').data('prefix')+'.png?date='+(new Date())).load(function(){
+					yCaptcha.children('div.loading').animate({opacity: 0}, function(){
+						yCaptcha.children('img').animate({opacity: 1});
+					});
+				});
+			});
+		});
+	});
+	$('.yCaptcha .loading').css({opacity: 0});
+	
+	//pagesList
+	$('a.pageList').click(function(){
+		middlePage($(this).attr('href'), $(this).data('numberPages'));
+		return false;
+	});
+	
+	$('section.relatedTools a').hover(function(){
+		$(this).children('span.mnimg').stop(true, false).animate({'margin-left':15});
+	}, function(){
+		$(this).children('span.mnimg').animate({'margin-left':0});
+	});
+	
+	//newWindow
+	$('a.newWindow').click(function(){
+		window.open($(this).attr('href'));
+		return false;
+	});
+	
+	/*repos_ad_lateral();
+	$(window).scroll(function(){
+		repos_ad_lateral();
+	}).resize(function(){
+		repos_ad_lateral();
+	});*/
+	
+	repositionSocialButtons();
+	$(window).scroll(function(){
+		repositionSocialButtons();
+	}).resize(function(){
+		repositionSocialButtons();
+	});
+	
+	
+	$('code').each(function(){//i, e
+		//hljs.highlightBlock(e);
+		initCodeHighlight(this);
+	});
+});
+(function($){
+$.fn.borderRadius = function(radius, corner){
+	if(!corner)
+	{
+		this.css({
+			'border-radius': radius+'px',
+			'-moz-border-radius': radius+'px',
+			'-webkit-border-radius': radius+'px'
+		});
+	}
+	else if(corner=='top-left')
+	{
+		this.css({
+			'border-top-left-radius': radius+'px',
+			'-moz-border-radius-topleft': radius+'px',
+			'-webkit-border-top-left-radius': radius+'px'
+		});
+	}
+	else if(corner=='top-right')
+	{
+		this.css({
+			'border-top-right-radius': radius+'px',
+			'-moz-border-radius-topright': radius+'px',
+			'-webkit-border-top-right-radius': radius+'px'
+		});
+	}
+	else if(corner=='bottom-left')
+	{
+		this.css({
+			'border-bottom-left-radius': radius+'px',
+			'-moz-border-radius-bottomleft': radius+'px',
+			'-webkit-border-bottom-left-radius': radius+'px'
+		});
+	}
+	else if(corner=='bottom-right')
+	{
+		this.css({
+			'border-bottom-right-radius': radius+'px',
+			'-moz-border-radius-bottomright': radius+'px',
+			'-webkit-border-bottom-right-radius': radius+'px'
+		});
+	}
+	return this;
+};
+
+$.fn.boxShadow = function(color, spread, blur, opacity, type, posX, posY){
+	var cssparams = '';
+	if(type=='inset'){
+		cssparams += 'inset ';
+	}
+	if(posX!=null){
+		cssparams += posX+'px ';
+	}
+	if(posY!=null){
+		cssparams += posY+'px ';
+	}
+	if(blur!=null){
+		cssparams += blur+'px ';
+	}
+	if(spread!=null){
+		cssparams += spread+'px ';
+	}
+	if(opacity===1){
+		cssparams += color;
+	}
+	else
+	{
+		var rgb = hex2rgb(color);
+		cssparams += 'rgba('+rgb[0]+', '+rgb[1]+', '+rgb[2]+', '+opacity+')';
+	}
+	this.css({
+		'box-shadow': cssparams,
+		'-moz-box-shadow': cssparams,
+		'-webkit-box-shadow': cssparams
+	});
+	return this;
+};
+
+$.fn.boxShadows = function(params){//color, spread, blur, opacity, type, posX, posY
+	var cssparams = '';
+	var first = true;
+	for(line in params)
+	{
+		line = params[line];
+		if(!first)
+		{
+			cssparams += ', ';
+		}
+		first = false;
+		color = line[0];
+		if(typeof line[1] === 'undefined')
+		{
+			spread = null;
+		}
+		else
+		{
+			spread = line[1];
+		}
+		if(typeof line[2] === 'undefined')
+		{
+			blur = null;
+		}
+		else
+		{
+			blur = line[2];
+		}
+		if(typeof line[3] === 'undefined')
+		{
+			opacity = null;
+		}
+		else
+		{
+			opacity = line[3];
+		}
+		if(typeof line[4] === 'undefined')
+		{
+			type = null;
+		}
+		else
+		{
+			type = line[4];
+		}
+		if(typeof line[5] === 'undefined')
+		{
+			posX = null;
+		}
+		else
+		{
+			posX = line[5];
+		}
+		if(typeof line[6] === 'undefined')
+		{
+			posY = null;
+		}
+		else
+		{
+			posY = line[6];
+		}
+		if(type=='inset'){
+			cssparams += 'inset ';
+		}
+		if(posX!=null){
+			cssparams += posX+'px ';
+		}
+		if(posY!=null){
+			cssparams += posY+'px ';
+		}
+		if(blur!=null){
+			cssparams += blur+'px ';
+		}
+		if(spread!=null){
+			cssparams += spread+'px ';
+		}
+		if(opacity===1){
+			cssparams += color;
+		}
+		else
+		{
+			var rgb = hex2rgb(color);
+			cssparams += 'rgba('+rgb[0]+', '+rgb[1]+', '+rgb[2]+', '+opacity+')';
+		}
+	}
+	this.css({
+		'box-shadow': cssparams,
+		'-moz-box-shadow': cssparams,
+		'-webkit-box-shadow': cssparams
+	});
+	return this;
+};
+
+$.fn.textShadow = function(color, blur, opacity, posX, posY, repeat){
+	var cssparams = '';
+	if(posX!=null){
+		cssparams += posX+'px ';
+	}
+	if(posY!=null){
+		cssparams += posY+'px ';
+	}
+	if(blur!=null){
+		cssparams += blur+'px ';
+	}
+	if(opacity===1){
+		cssparams += color;
+	}
+	else
+	{
+		var rgb = hex2rgb(color);
+		cssparams += 'rgba('+rgb[0]+', '+rgb[1]+', '+rgb[2]+', '+opacity+')';
+	}
+	if(repeat>1)
+	{
+		for(var i=1;i<repeat;i++)
+		{
+			cssparams = cssparams+', '+cssparams;
+		}
+	}
+	this.css({
+		'text-shadow': cssparams
+	});
+	return this;
+};
+
+$.fn.unSelectable = function(){
+	this.attr('unselectable', 'on');
+	this.css({
+		'-moz-user-select': '-moz-none',
+		'-khtml-user-select': 'none',
+		'-webkit-user-select': 'none',
+		'-o-user-select': 'none',
+		'user-select': 'none',
+	});
+	this.onselectstart = function() {return false;}
+	return this;
+};
+$.fn.selectContent = function(){
+    var obj = this[0];
+	if($(obj).is('input'))
+	{
+		obj.select();
+	}
+	else
+	{
+		if (window.getSelection) {
+			var sel = window.getSelection();
+			sel.removeAllRanges();
+			var range = document.createRange();
+			range.selectNodeContents(obj);
+			sel.addRange(range);
+		} else if (document.selection) {
+			var textRange = document.body.createTextRange();
+			textRange.moveToElementText(obj);
+			textRange.select();
+		}
+	}
+    return this;
+}
+
+
+$.fn.insertAtCursor = function(myValue){
+	return this.each(function(i){
+		if(document.selection)
+		{
+			this.focus();
+			sel = document.selection.createRange();
+			sel.text = myValue;
+			this.focus();
+		}
+		else if(this.selectionStart || this.selectionStart=='0')
+		{
+			var startPos = this.selectionStart;
+			var endPos = this.selectionEnd;
+			var scrollTop = this.scrollTop;
+			this.value = this.value.substring(0, startPos)+myValue+this.value.substring(endPos,this.value.length);
+			this.focus();
+			this.selectionStart = startPos+myValue.length;
+			this.selectionEnd = startPos+myValue.length;
+			this.scrollTop = scrollTop;
+		}
+		else
+		{
+			this.value += myValue;
+			this.focus();
+		}
+	});
+}
+$.fn.selectRange = function(start, end){
+	return this.each(function(){
+		if(this.setSelectionRange)
+		{
+			this.focus();
+			this.setSelectionRange(start, end);
+		}
+		else if(this.createTextRange)
+		{
+			var range = this.createTextRange();
+			range.collapse(true);
+			range.moveEnd('character', end);
+			range.moveStart('character', start);
+			range.select();
+		}
+	});
+};
+$.fn.cursorAt = function(position){
+	return this.selectRange(position, position);
+};
+$.fn.tagSelection = function(start, end){
+	return this.each(function(){
+		var selectionStart = this.selectionStart;
+		var selectionEnd = this.selectionEnd;
+		$(this).cursorAt(selectionStart).insertAtCursor(start).cursorAt(selectionEnd+start.length).insertAtCursor(end).selectRange((selectionStart+start.length), (selectionEnd+start.length));
+	});
+};
+$.fn.getSelectionSize = function(){
+	var selectionStart = this.get(0).selectionStart;
+	var selectionEnd = this.get(0).selectionEnd;
+	return selectionEnd-selectionStart;
+};
+
+
+$.fn.isChildOf = function(parent){
+	return this.parents().filter(parent).length>0;
+};
+
+$.fn.ySlider = function(arg){
+	return new ySlider(this, arg);
+};
+
+$.fn.ySelector = function(arg){
+	return new ySelector(this, arg);
+};
+
+$.fn.yRating = function(arg){
+	return new yRating(this, arg);
+};
+
+$.expr[':'].contentIs = function(ele, idx, meta){
+    return $(ele).text()===meta[3];
+};
+
+})(jQuery);
+
+
+jQuery.openWindow = function(url, width, height, name, center, top, left, menubar, scrollbars){
+	var opts = '';
+	if(!isDefined(width))
+	{
+		width = 800;
+	}
+	if(!isDefined(height))
+	{
+		height = 500;
+	}
+	if(center)
+	{
+		opts += ', left='+((screen.width-width)/2)+', top='+((screen.height-height)/2);
+	}
+	else
+	{
+		if(isDefined(top))
+		{
+			opts += ', top='+top;
+		}
+		if(isDefined(left))
+		{
+			opts += ', left='+left;
+		}
+	}
+	opts += ', width='+width;
+	opts += ', height='+height;
+	if(isDefined(scrollbars))
+	{
+		if(scrollbars)
+		{
+			opts += ', scrollbars=yes';
+		}
+		else
+		{
+			opts += ', scrollbars=no';
+		}
+	}
+	else
+	{
+		opts += ', scrollbars=yes';
+	}
+	if(isDefined(menubar))
+	{
+		if(menubar)
+		{
+			opts += ', menubar=yes';
+		}
+		else
+		{
+			opts += ', menubar=no';
+		}
+	}
+	if(!name)
+	{
+		name = 'window';
+	}
+	return window.open(url, name, opts);
+}
+
+/*function repos_ad_lateral()
+{
+	if($('aside').outerHeight(true)>$('.wrapper_border').outerHeight(true))
+	{
+		$('aside').css('display', 'none');
+	}
+	else
+	{
+		var xpos = $('section').offset().left+$('section').outerWidth()-$('aside').outerWidth(true);
+		var ypos = Math.min(Math.max($('.wrapper_border').offset().top-($('aside').outerHeight(true)-$('aside').outerHeight()), $(window).scrollTop()), $('.wrapper_border').offset().top+$('.wrapper_border').outerHeight()-$('aside').outerHeight(true));
+		$('aside').css({
+			'display': 'block',
+			'left': xpos+'px',
+			'top': ypos+'px'
+		});
+	}
+}*/
+function repositionSocialButtons()
+{
+//		var xpos = $('body>section').first().offset().left+$('body>section').first().outerWidth()-$('aside.socialButtons').outerWidth(true);
+		var xpos = $('.wrapper_border').offset().left+$('.wrapper_border').outerWidth(true);//+$('aside.socialButtons').outerWidth(true)-$('aside.socialButtons').outerWidth();
+		var ypos = Math.min(Math.max($('.wrapper_border').offset().top-($('aside.socialButtons').outerHeight(true)-$('aside.socialButtons').outerHeight()), $(window).scrollTop()), $('.wrapper_border').offset().top+$('.wrapper_border').outerHeight()-$('aside.socialButtons').outerHeight(true));
+		$('aside.socialButtons').css({
+			'left': xpos+'px',
+			'top': ypos+'px'
+		});
+}
+
+function hex2rgb(hex)
+{
+	if(hex.charAt(0)=='#')
+	{
+		hex = hex.substr(1, 6);
+	}
+	hex = hex.substr(0, 6);
+	var r = parseInt(hex.substr(0, 2), 16);
+	var g = parseInt(hex.substr(2, 2), 16);
+	var b = parseInt(hex.substr(4, 2), 16);
+	var rgb = new Array(r, g, b);
+	return rgb;
+}
+
+function isDefined(variable)
+{
+	if(typeof variable === 'undefined')
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+function noNaN(nan, val)
+{
+	if(!val)
+	{
+		val = 0;
+	}
+	if(isNaN(nan))
+	{
+		return val;
+	}
+	else
+	{
+		return nan;
+	}
+}
+
+function switch_tab(id)
+{
+	$('.tabs_menu span').removeClass('current');
+	$('#tabmenu_'+id).addClass('current');
+	$('.tabs_content').children('div').slideUp();
+	$('#tab_'+id).slideDown();
+}
+
+function middlePage(href, number)
+{
+	var number2 = prompt('Please type a number between 1 and '+number, '');
+	if(number2)
+	{
+		number = parseInt(number);
+		number2 = parseInt(number2);
+		if(number >= number2 && number2>=1)
+		{
+			document.location = href.replace('_PAGE_', number2);
+		}
+		else
+		{
+			alert('You have not entered a number between 1 and '+number);
+		}
+	}
+}
+
+function ySlider(t, a)
+{
+	this.slideNext =function(){
+		var slide = 1;
+		if((this.currentSlide+1)<=this.numberSlides)
+		{
+			slide = this.currentSlide+1;
+		}
+		this.slideTo(slide);
+		return this;
+	};
+	this.slidePrevious = function(){
+		var slide = this.numberSlides;
+		if((this.currentSlide-1)>=1)
+		{
+			slide = this.currentSlide-1;
+		}
+		this.slideTo(slide);
+		return this;
+	};
+	this.slideTo = function(slide){
+		this.updateNumberSlides();
+		if(slide>this.numberSlides)
+		{
+			slide = 1;
+		}
+		if(slide<1)
+		{
+			slide = this.numberSlides;
+		}
+		this.currentSlide = slide;
+		if(this.type=='vertical')
+		{
+			this.t.children('.ySliderBox').animate({'scrollTop': ((slide-1)*this.slideSize)}, 'slow');
+		}
+		else
+		{
+			this.t.children('.ySliderBox').animate({'scrollLeft': ((slide-1)*this.slideSize)}, 'slow');
+		}
+		return this;
+	};
+	this.updateNumberSlides = function(){
+		if(this.type=='vertical')
+		{
+			this.numberSlides = noNaN(parseInt(this.t.children('.ySliderBox')[0].scrollHeight/this.slideSize))-(noNaN(parseInt(this.t.children('.ySliderBox').height()/this.slideSize)))+1;
+		}
+		else
+		{
+			this.numberSlides = noNaN(parseInt(this.t.children('.ySliderBox')[0].scrollWidth/this.slideSize))-(noNaN(parseInt(this.t.children('.ySliderBox').width()/this.slideSize)))+1;
+		}
+		if(this.numberSlides<0)
+		{
+			this.numberSlides = 1;
+		}
+		return this;
+	};
+	this.setSlideSize = function(size){
+		this.slideSize = noNaN(parseInt(size));
+		if(this.slideSize<0)
+		{
+			this.slideSize = 1;
+		}
+		this.updateNumberSlides();
+		this.slideTo(this.currentSlide);
+		return this;
+	};
+	this.setType = function(type){
+		this.type = type;
+		if(this.type!='vertical')
+		{
+			this.type = 'horizontal';
+		}
+		this.updateNumberSlides();
+		return this;
+	};
+	this.currentSlide=1;
+	this.slideSize=100;
+	this.type = 'vertical';
+	this.numberSlides=1;
+	this.t = t;
+	this.slideTo(this.currentSlide);
+	this.t.children('.previous').click({th: this}, function(e){
+		th = e.data.th;
+		th.slidePrevious();
+	});
+	this.t.children('.next').click({th: this}, function(e){
+		th = e.data.th;
+		th.slideNext();
+	});
+	return this;
+}
+
+
+function ySelector(t, a)
+{
+	this.setRelativeElement = function(element){
+		return this.setElement(element+this.offset);
+	};
+	this.setElement = function(element){
+		this.element = element;
+		if(this.element<0)
+		{
+			this.element = 0;
+		}
+		else if(this.element>this.offset && (this.element-this.offset)<=this.t.children('.element').length)
+		{
+			this.t.children('.element').removeClass('selected').eq(this.element-this.offset-1).addClass('selected');
+		}
+		else
+		{
+			this.t.children('.element').removeClass('selected');
+		}
+		this.t.children('input[type=hidden]').val(this.element).change();
+		return this;
+	};
+	this.getElement = function(){
+		return this.element;
+	};
+	this.getRelativeElement = function(){
+		return this.element-this.offset;
+	};
+	this.setOffset = function(offset){
+		if(offset<0)
+		{
+			offset = 0;
+		}
+		var el = this.element;
+		this.offset = offset;
+		return this;
+	};
+	this.element = 1;
+	this.offset = 0;
+	this.t = t;
+	this.t.children('.element').bind('click', {th: this}, function(e){
+		th = e.data.th;
+		th.setRelativeElement(th.t.children('.element').index(this)+1+th.offset);
+	});
+	return this;
+}
+
+
+function yRating(t, a)
+{
+	this.setType = function(type){
+		this.type = type;
+		this.refreshHTML();
+		return this;
+	};
+	this.setIsLogged = function(logged){
+		this.isLogged = logged;
+		this.refreshHTML();
+		return this;
+	};
+	this.setId = function(id){
+		this.id = id;
+		return this;
+	};
+	this.refreshHTML = function(){
+		if(this.type=='full' || this.type=='rate')
+		{
+			this.t.children('.rate').text(this.rating+'/5');
+		}
+		if(this.type=='full' || this.type=='stars')
+		{
+			this.t.children('.stars').html('<div class="icon star"></div><div class="icon star"></div><div class="icon star"></div><div class="icon star"></div><div class="icon star"></div>');
+			this.t.children('.stars').children('div').slice(0, Math.round(this.rating)).css('opacity', 1);
+			this.t.children('.stars').children('div').slice(Math.round(this.rating)).css('opacity', 0.6);
+			if(this.isLogged)
+			{
+				this.t.children('.stars').children('div').bind('click', {th: this}, function(e){
+					th = e.data.th;
+					th.loadRating(th.t.children('.stars').children('div').index(this)+1);
+				});
+				this.t.children('.stars').children('div').bind('hover', {th: this}, function(e){
+					th = e.data.th;
+					th.t.children('.stars').children('div').slice(0, th.t.children('.stars').children('div').index(this)+1).css('opacity', 1);//Hovered
+					th.t.children('.stars').children('div').slice(th.t.children('.stars').children('div').index(this)+1).css('opacity', 0.6);//unHovered
+				});
+				this.t.children('.stars').bind('mouseleave', {th: this}, function(e){
+					th = e.data.th;
+					th.t.children('.stars').children('div').slice(0, Math.round(th.rating)).css('opacity', 1);
+					th.t.children('.stars').children('div').slice(Math.round(th.rating)).css('opacity', 0.6);
+				});
+			}
+		}
+		return this;
+	};
+	this.loadRating = function(rate){
+		var queryArg = {};
+		queryArg.id = this.id;
+		if(typeof rate != 'undefined')
+		{
+			queryArg.rate = rate;
+		}
+		th = this;
+		th.t.children('.rate').animate({opacity: 0}, function(){
+			th.t.children('.loading').animate({opacity: 1}, function(){
+				$.ajax({
+					url: 'http://www.webestools.com/page_new/js/ajax/yRating.js',
+					data: queryArg,
+					type: 'GET',
+					dataType: 'json',
+					context: th
+				}).done(function(json){
+					this.t.children('.loading').animate({opacity: 0}, function(){
+						th.setRating(json.results.currentRating);
+						th.t.children('.rate').animate({opacity: 1});
+					});
+				}).fail(function(){
+					this.t.children('.loading').animate({opacity: 0}, function(){
+						th.t.children('.rate').text('ERROR').animate({opacity: 1});
+					});
+				});
+			});
+		});
+		return this;
+	};
+	this.setRating = function(rating){
+		this.rating = rating;
+		this.refreshHTML();
+		return this;
+	};
+	this.t = t;
+	this.isLogged = false;
+	this.id = '';
+	this.type = 'full';
+	this.rating = 0;
+	this.refreshHTML();
+	this.t.children('.loading').css({opacity: 0});
+	return this;
+}
+
+
+function initCodeHighlight(element)
+{
+	var isNew = true;
+	if($(element).parent().hasClass('code'))
+	{
+		isNew = false;
+	}
+	if(isNew)
+	{
+		$(element).after('<div class="code"></div>');
+		$(element).next().append('<div class="linesnumbers"></div>').append($(element).detach());
+		$(element).css({
+			'-moz-tab-size': '4',
+			'-o-tab-size': '4',
+			'tab-size': '4'
+		});
+	}
+	if($(element).children('br').length==0)
+	{
+		if(element.innerHTML.slice(-1)=="\n")
+		{
+			element.innerHTML = element.innerHTML.slice(0, -1);
+		}
+		element.innerHTML = element.innerHTML.replace(/\n/g, "<br />");
+	}
+	/*if($.browser.webkit || $.browser.msie)
+	{
+		element.innerHTML = element.innerHTML.replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
+	}*/
+	var nblines = $(element).children('br').length + 1;
+	if(!$(element).hasClass('.no-highlight') && !$(element).hasClass('.other'))
+	{
+		hljs.highlightBlock(element, null, true);
+	}
+	var linesHTML = '';
+	for(var i=1;i<=nblines;i++)
+	{
+		linesHTML += '<span class="linenumber">'+i+'</span><br />';
+	}
+	$(element).css('display', 'block').parent().boxShadow('#000000', 0, 6, 0.25, 'outset', 0, 0).children('.linesnumbers').empty().append(linesHTML);
+}
+
+function reloadDynamicCSS(elements)
+{
+	// TO DELETE
+}
+function getViewportWidth() {
+	var cli = document.documentElement.clientWidth;
+	var inner = window.innerWidth;
+	return inner>cli?inner:cli;
+}
+
+function yDialog(title, message)
+{
+	this.close = function(){
+		$('body').css({'overflow':'auto'});
+		$('#mask').fadeOut();
+		this.dialog.find('div button').add('#mask').unbind(this.namespace);
+		this.dialog.fadeOut();
+	};
+	$('body').css({'overflow':'hidden'});
+	$('#mask').css({
+		'display': 'block',
+		'opacity': 0
+	}).after(
+ '<div class="yDialog">'
++'	<span>'+title+'</span>'
++'	<div>'
++'		<div>'+message+'</div>'
++'		<button>Ok</button>'
++'	</div>'
++'</div>'
+);
+	this.namespace = '.yDialog_'+Math.floor((Math.random()*10000000000));
+	this.dialog = $('#mask').next();
+	$('#mask').animate({
+		'opacity' : 0.5
+	});
+	this.dialog.borderRadius(7).boxShadow('#000000', 0, 13, 0.8, 'outset', 0, 0).fadeIn();
+	this.dialog.find('div button:last').add('#mask').bind('click'+this.namespace, {'th': this}, function(e){
+		e.data.th.close();
+	});
+	return this;
+}
+function scrollUnto(target, element)
+{
+	if(!element)
+	{
+		element = $('html, body');
+	}
+	if(element.has(target).length>0)
+	{
+		if(element.is('html, body') || $.isWindow(element.get(0)))
+		{
+			position = target.offset().top;
+		}
+		else
+		{
+			position = target.offset().top-element.get(0).offset().top;
+		}
+		element.stop().animate({'scrollTop': position}, 'slow');
+	}
+}
+function urlEncode(txt)
+{
+	return encodeURIComponent(txt);
+}
+function urlEncodeColor(txt)
+{
+	return urlEncode(encodeColor(txt));
+}
+function encodeColor(txt)
+{
+	return txt.replace('#', '');
+}
+function htmlEscape(text)
+{
+	//return html.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+	return $('<div/>').text(text).html();
+}
+function htmlUnEscape(html)
+{
+	return $('<div/>').html(html).text();
+}
+
+function queryImage(url, data, type)
+{
+	if(!type)
+	{
+		type = 'GET';
+	}
+	$('.result .loading').show();
+	$('.result .preview').hide();
+	scrollUnto($('#generatorForm'));
+	$.ajax({
+		url: url,
+		data: data,
+		type: type,
+		dataType: 'json',
+	}).done(function(json){
+		if(json.state == 'success')
+		{
+			$('.result .error').hide();
+			$('.result .preview').attr('src', json.url).load(function(){
+				$(this).show();
+				$('.result .loading').hide();
+			});
+			var extention = json.url.split('.').pop();
+			$('.result .download').unbind('click').click(function(){
+				window.open('http://download.webestools.com/dll.php?name=image&ext='+extention+'&url='+urlEncode(json.url));
+			});
+			$('.result .upload').unbind('click').click(function(){
+				window.open('http://www.auplod.com/uploader.html?url='+urlEncode(json.url));
+			});
+		}
+		else if(json.state == 'error' && json.errorMsg)
+		{
+			$('.result .loading').hide();
+			$('.result .error').show().children('.notification>div').text(json.errorMsg);
+		}
+		else
+		{
+			$('.result .loading').hide();
+			$('.result .error').show();
+		}
+		return json.url;
+	}).fail(function(){
+		$('.result .loading').hide();
+		$('.result .error').show();
+	});
+}
+
+function queryJson(url, data, callback, method)
+{
+	if (typeof method == 'undefined')
+		method = 'GET';
+	$('.result .error').hide();
+	$('.result .loading').show();
+	$.ajax({
+		url: url,
+		data: data,
+		type: method,
+		dataType: 'json',
+	}).done(function(json){
+		if(json.state == 'success')
+		{
+			$('.result .error').hide();
+			$('.result .loading').hide();
+			
+				callback(json);
+			
+			$('.result .code').show();
+		}
+		else if(json.state == 'error' && json.errorMsg)
+		{
+			$('.result .loading').hide();
+			$('.result .error').show().children('.notification>div').text(json.errorMsg);
+		}
+		else
+		{
+			$('.result .loading').hide();
+			$('.result .error').show();
+		}
+	}).fail(function(){
+		$('.result .loading').hide();
+		$('.result .error').show();
+	});
+}
+
+//Jquery Cookie
+(function(e){if(typeof define==="function"&&define.amd){define(["jquery"],e)}else if(typeof exports==="object"){e(require("jquery"))}else{e(jQuery)}})(function(e){function n(e){return u.raw?e:encodeURIComponent(e)}function r(e){return u.raw?e:decodeURIComponent(e)}function i(e){return n(u.json?JSON.stringify(e):String(e))}function s(e){if(e.indexOf('"')===0){e=e.slice(1,-1).replace(/\\"/g,'"').replace(/\\\\/g,"\\")}try{e=decodeURIComponent(e.replace(t," "));return u.json?JSON.parse(e):e}catch(n){}}function o(t,n){var r=u.raw?t:s(t);return e.isFunction(n)?n(r):r}var t=/\+/g;var u=e.cookie=function(t,s,a){if(s!==undefined&&!e.isFunction(s)){a=e.extend({},u.defaults,a);if(typeof a.expires==="number"){var f=a.expires,l=a.expires=new Date;l.setTime(+l+f*864e5)}return document.cookie=[n(t),"=",i(s),a.expires?"; expires="+a.expires.toUTCString():"",a.path?"; path="+a.path:"",a.domain?"; domain="+a.domain:"",a.secure?"; secure":""].join("")}var c=t?undefined:{};var h=document.cookie?document.cookie.split("; "):[];for(var p=0,d=h.length;p<d;p++){var v=h[p].split("=");var m=r(v.shift());var g=v.join("=");if(t&&t===m){c=o(g,s);break}if(!t&&(g=o(g))!==undefined){c[m]=g}}return c};u.defaults={};e.removeCookie=function(t,n){if(e.cookie(t)===undefined){return false}e.cookie(t,"",e.extend({},n,{expires:-1}));return!e.cookie(t)}});
+
+
+
+
+
+
+
+
+
+
+// highlight.pack.js
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]||p=="no-highlight"){return p}}}function c(r){var p=[];(function q(t,u){for(var s=0;s<t.childNodes.length;s++){if(t.childNodes[s].nodeType==3){u+=t.childNodes[s].nodeValue.length}else{if(t.childNodes[s].nodeName=="BR"){u+=1}else{if(t.childNodes[s].nodeType==1){p.push({event:"start",offset:u,node:t.childNodes[s]});u=q(t.childNodes[s],u);p.push({event:"stop",offset:u,node:t.childNodes[s]})}}}}return u})(r,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(w,y,u){if(w.compiled){return}var s=[];if(w.k){var r={};function x(D,C){var A=C.split(" ");for(var z=0;z<A.length;z++){var B=A[z].split("|");r[B[0]]=[D,B[1]?Number(B[1]):1];s.push(B[0])}}w.lR=f(y,w.l||hljs.IR,true);if(typeof w.k=="string"){x("keyword",w.k)}else{for(var v in w.k){if(!w.k.hasOwnProperty(v)){continue}x(v,w.k[v])}}w.k=r}if(!u){if(w.bWK){w.b="\\b("+s.join("|")+")\\s"}w.bR=f(y,w.b?w.b:"\\B|\\b");if(!w.e&&!w.eW){w.e="\\B|\\b"}if(w.e){w.eR=f(y,w.e)}}if(w.i){w.iR=f(y,w.i)}if(w.r===undefined){w.r=1}if(!w.c){w.c=[]}w.compiled=true;for(var t=0;t<w.c.length;t++){if(w.c[t]=="self"){w.c[t]=w}q(w.c[t],y,false)}if(w.starts){q(w.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(D,E){if(!j.called){j();j.called=true}function s(r,O){for(var N=0;N<O.c.length;N++){var M=O.c[N].bR.exec(r);if(M&&M.index==0){return O.c[N]}}}function w(M,r){if(p[M].e&&p[M].eR.test(r)){return 1}if(p[M].eW){var N=w(M-1,r);return N?N+1:0}return 0}function x(r,M){return M.i&&M.iR.test(r)}function L(O,P){var N=[];for(var M=0;M<O.c.length;M++){N.push(O.c[M].b)}var r=p.length-1;do{if(p[r].e){N.push(p[r].e)}r--}while(p[r+1].eW);if(O.i){N.push(O.i)}return N.length?f(P,N.join("|"),true):null}function q(N,M){var O=p[p.length-1];if(O.t===undefined){O.t=L(O,F)}var r;if(O.t){O.t.lastIndex=M;r=O.t.exec(N)}return r?[N.substr(M,r.index-M),r[0],false]:[N.substr(M),"",true]}function A(O,r){var M=F.cI?r[0].toLowerCase():r[0];var N=O.k[M];if(N&&N instanceof Array){return N}return false}function G(M,Q){M=m(M);if(!Q.k){return M}var r="";var P=0;Q.lR.lastIndex=0;var N=Q.lR.exec(M);while(N){r+=M.substr(P,N.index-P);var O=A(Q,N);if(O){y+=O[1];r+='<span class="'+O[0]+'">'+N[0]+"</span>"}else{r+=N[0]}P=Q.lR.lastIndex;N=Q.lR.exec(M)}return r+M.substr(P)}function B(M,N){var r;if(N.sL==""){r=g(M)}else{r=d(N.sL,M)}if(N.r>0){y+=r.keyword_count;C+=r.r}return'<span class="'+r.language+'">'+r.value+"</span>"}function K(r,M){if(M.sL&&e[M.sL]||M.sL==""){return B(r,M)}else{return G(r,M)}}function J(N,r){var M=N.cN?'<span class="'+N.cN+'">':"";if(N.rB){z+=M;N.buffer=""}else{if(N.eB){z+=m(r)+M;N.buffer=""}else{z+=M;N.buffer=r}}p.push(N);C+=N.r}function H(O,N,R){var S=p[p.length-1];if(R){z+=K(S.buffer+O,S);return false}var Q=s(N,S);if(Q){z+=K(S.buffer+O,S);J(Q,N);return Q.rB}var M=w(p.length-1,N);if(M){var P=S.cN?"</span>":"";if(S.rE){z+=K(S.buffer+O,S)+P}else{if(S.eE){z+=K(S.buffer+O,S)+P+m(N)}else{z+=K(S.buffer+O+N,S)+P}}while(M>1){P=p[p.length-2].cN?"</span>":"";z+=P;M--;p.length--}var r=p[p.length-1];p.length--;p[p.length-1].buffer="";if(r.starts){J(r.starts,"")}return S.rE}if(x(N,S)){throw"Illegal"}}var F=e[D];var p=[F.dM];var C=0;var y=0;var z="";try{var t,v=0;F.dM.buffer="";do{t=q(E,v);var u=H(t[0],t[1],t[2]);v+=t[0].length;if(!u){v+=t[1].length}}while(!t[2]);return{r:C,keyword_count:y,value:z,language:D}}catch(I){if(I=="Illegal"){return{r:0,keyword_count:0,value:m(E)}}else{throw I}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v=="no-highlight"){return}if(v){y=d(v,x)}else{y=g(x);v=y.language}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.bash=function(a){var f="true false";var c={cN:"variable",b:"\\$([a-zA-Z0-9_]+)\\b"};var b={cN:"variable",b:"\\$\\{(([^}])|(\\\\}))+\\}",c:[a.CNM]};var g={cN:"string",b:'"',e:'"',i:"\\n",c:[a.BE,c,b],r:0};var d={cN:"string",b:"'",e:"'",c:[{b:"''"}],r:0};var e={cN:"test_condition",b:"",e:"",c:[g,d,c,b,a.CNM],k:{literal:f},r:0};return{dM:{k:{keyword:"if then else fi for break continue while in do done echo exit return set declare",literal:f},c:[{cN:"shebang",b:"(#!\\/bin\\/bash)|(#!\\/bin\\/sh)",r:10},c,b,a.HCM,a.CNM,g,d,a.inherit(e,{b:"\\[ ",e:" \\]",r:0}),a.inherit(e,{b:"\\[\\[ ",e:" \\]\\]"})]}}}(hljs);hljs.LANGUAGES.cs=function(a){return{dM:{k:"abstract as base bool break byte case catch char checked class const continue decimal default delegate do double else enum event explicit extern false finally fixed float for foreach goto if implicit in int interface internal is lock long namespace new null object operator out override params private protected public readonly ref return sbyte sealed short sizeof stackalloc static string struct switch this throw true try typeof uint ulong unchecked unsafe ushort using virtual volatile void while ascending descending from get group into join let orderby partial select set value var where yield",c:[{cN:"comment",b:"///",e:"$",rB:true,c:[{cN:"xmlDocTag",b:"///|<!--|-->"},{cN:"xmlDocTag",b:"</?",e:">"}]},a.CLCM,a.CBLCLM,{cN:"preprocessor",b:"#",e:"$",k:"if else elif endif define undef warning error line region endregion pragma checksum"},{cN:"string",b:'@"',e:'"',c:[{b:'""'}]},a.ASM,a.QSM,a.CNM]}}}(hljs);hljs.LANGUAGES.ruby=function(e){var a="[a-zA-Z_][a-zA-Z0-9_]*(\\!|\\?)?";var k="[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\]=?";var g={keyword:"and false then defined module in return redo if BEGIN retry end for true self when next until do begin unless END rescue nil else break undef not super class case require yield alias while ensure elsif or def",keymethods:"__id__ __send__ abort abs all? allocate ancestors any? arity assoc at at_exit autoload autoload? between? binding binmode block_given? call callcc caller capitalize capitalize! casecmp catch ceil center chomp chomp! chop chop! chr class class_eval class_variable_defined? class_variables clear clone close close_read close_write closed? coerce collect collect! compact compact! concat const_defined? const_get const_missing const_set constants count crypt default default_proc delete delete! delete_at delete_if detect display div divmod downcase downcase! downto dump dup each each_byte each_index each_key each_line each_pair each_value each_with_index empty? entries eof eof? eql? equal? eval exec exit exit! extend fail fcntl fetch fileno fill find find_all first flatten flatten! floor flush for_fd foreach fork format freeze frozen? fsync getc gets global_variables grep gsub gsub! has_key? has_value? hash hex id include include? included_modules index indexes indices induced_from inject insert inspect instance_eval instance_method instance_methods instance_of? instance_variable_defined? instance_variable_get instance_variable_set instance_variables integer? intern invert ioctl is_a? isatty iterator? join key? keys kind_of? lambda last length lineno ljust load local_variables loop lstrip lstrip! map map! match max member? merge merge! method method_defined? method_missing methods min module_eval modulo name nesting new next next! nil? nitems nonzero? object_id oct open pack partition pid pipe pop popen pos prec prec_f prec_i print printf private_class_method private_instance_methods private_method_defined? private_methods proc protected_instance_methods protected_method_defined? protected_methods public_class_method public_instance_methods public_method_defined? public_methods push putc puts quo raise rand rassoc read read_nonblock readchar readline readlines readpartial rehash reject reject! remainder reopen replace require respond_to? reverse reverse! reverse_each rewind rindex rjust round rstrip rstrip! scan seek select send set_trace_func shift singleton_method_added singleton_methods size sleep slice slice! sort sort! sort_by split sprintf squeeze squeeze! srand stat step store strip strip! sub sub! succ succ! sum superclass swapcase swapcase! sync syscall sysopen sysread sysseek system syswrite taint tainted? tell test throw times to_a to_ary to_f to_hash to_i to_int to_io to_proc to_s to_str to_sym tr tr! tr_s tr_s! trace_var transpose trap truncate tty? type ungetc uniq uniq! unpack unshift untaint untrace_var upcase upcase! update upto value? values values_at warn write write_nonblock zero? zip"};var c={cN:"yardoctag",b:"@[A-Za-z]+"};var l=[{cN:"comment",b:"#",e:"$",c:[c]},{cN:"comment",b:"^\\=begin",e:"^\\=end",c:[c],r:10},{cN:"comment",b:"^__END__",e:"\\n$"}];var d={cN:"subst",b:"#\\{",e:"}",l:a,k:g};var j=[e.BE,d];var b=[{cN:"string",b:"'",e:"'",c:j,r:0},{cN:"string",b:'"',e:'"',c:j,r:0},{cN:"string",b:"%[qw]?\\(",e:"\\)",c:j},{cN:"string",b:"%[qw]?\\[",e:"\\]",c:j},{cN:"string",b:"%[qw]?{",e:"}",c:j},{cN:"string",b:"%[qw]?<",e:">",c:j,r:10},{cN:"string",b:"%[qw]?/",e:"/",c:j,r:10},{cN:"string",b:"%[qw]?%",e:"%",c:j,r:10},{cN:"string",b:"%[qw]?-",e:"-",c:j,r:10},{cN:"string",b:"%[qw]?\\|",e:"\\|",c:j,r:10}];var i={cN:"function",b:"\\bdef\\s+",e:" |$|;",l:a,k:g,c:[{cN:"title",b:k,l:a,k:g},{cN:"params",b:"\\(",e:"\\)",l:a,k:g}].concat(l)};var h={cN:"identifier",b:a,l:a,k:g,r:0};var f=l.concat(b.concat([{cN:"class",bWK:true,e:"$|;",k:"class module",c:[{cN:"title",b:"[A-Za-z_]\\w*(::\\w+)*(\\?|\\!)?",r:0},{cN:"inheritance",b:"<\\s*",c:[{cN:"parent",b:"("+e.IR+"::)?"+e.IR}]}].concat(l)},i,{cN:"constant",b:"(::)?([A-Z]\\w*(::)?)+",r:0},{cN:"symbol",b:":",c:b.concat([h]),r:0},{cN:"number",b:"(\\b0[0-7_]+)|(\\b0x[0-9a-fA-F_]+)|(\\b[1-9][0-9_]*(\\.[0-9_]+)?)|[0_]\\b",r:0},{cN:"number",b:"\\?\\w"},{cN:"variable",b:"(\\$\\W)|((\\$|\\@\\@?)(\\w+))"},h,{b:"("+e.RSR+")\\s*",c:l.concat([{cN:"regexp",b:"/",e:"/[a-z]*",i:"\\n",c:[e.BE]}]),r:0}]));d.c=f;i.c[1].c=f;return{dM:{l:a,k:g,c:f}}}(hljs);hljs.LANGUAGES.diff=function(a){return{cI:true,dM:{c:[{cN:"chunk",b:"^\\@\\@ +\\-\\d+,\\d+ +\\+\\d+,\\d+ +\\@\\@$",r:10},{cN:"chunk",b:"^\\*\\*\\* +\\d+,\\d+ +\\*\\*\\*\\*$",r:10},{cN:"chunk",b:"^\\-\\-\\- +\\d+,\\d+ +\\-\\-\\-\\-$",r:10},{cN:"header",b:"Index: ",e:"$"},{cN:"header",b:"=====",e:"=====$"},{cN:"header",b:"^\\-\\-\\-",e:"$"},{cN:"header",b:"^\\*{3} ",e:"$"},{cN:"header",b:"^\\+\\+\\+",e:"$"},{cN:"header",b:"\\*{5}",e:"\\*{5}$"},{cN:"addition",b:"^\\+",e:"$"},{cN:"deletion",b:"^\\-",e:"$"},{cN:"change",b:"^\\!",e:"$"}]}}}(hljs);hljs.LANGUAGES.javascript=function(a){return{dM:{k:{keyword:"in if for while finally var new function do return void else break catch instanceof with throw case default try this switch continue typeof delete",literal:"true false null undefined NaN Infinity"},c:[a.ASM,a.QSM,a.CLCM,a.CBLCLM,a.CNM,{b:"("+a.RSR+"|\\b(case|return|throw)\\b)\\s*",k:"return throw case",c:[a.CLCM,a.CBLCLM,{cN:"regexp",b:"/",e:"/[gim]*",c:[{b:"\\\\/"}]}],r:0},{cN:"function",bWK:true,e:"{",k:"function",c:[{cN:"title",b:"[A-Za-z$_][0-9A-Za-z$_]*"},{cN:"params",b:"\\(",e:"\\)",c:[a.CLCM,a.CBLCLM],i:"[\"'\\(]"}],i:"\\[|%"}]}}}(hljs);hljs.LANGUAGES.css=function(a){var b={cN:"function",b:a.IR+"\\(",e:"\\)",c:[{eW:true,eE:true,c:[a.NM,a.ASM,a.QSM]}]};return{cI:true,dM:{i:"",c:[a.CBLCLM,{cN:"id",b:"\\#[A-Za-z0-9_-]+"},{cN:"class",b:"\\.[A-Za-z0-9_-]+",r:0},{cN:"attr_selector",b:"\\[",e:"\\]",i:"$"},{cN:"pseudo",b:":(:)?[a-zA-Z0-9\\_\\-\\+\\(\\)\\\"\\']+"},{cN:"at_rule",b:"@(font-face|page)",l:"[a-z-]+",k:"font-face page"},{cN:"at_rule",b:"@",e:"[{;]",eE:true,k:"import page media charset",c:[b,a.ASM,a.QSM,a.NM]},{cN:"tag",b:a.IR,r:0},{cN:"rules",b:"{",e:"}",i:"[^\\s]",r:0,c:[a.CBLCLM,{cN:"rule",b:"[^\\s]",rB:true,e:";",eW:true,c:[{cN:"attribute",b:"[A-Z\\_\\.\\-\\s]+\:",e:"",eE:true,i:"",starts:{cN:"value",eW:true,eE:true,c:[b,a.NM,a.QSM,a.ASM,a.CBLCLM,{cN:"hexcolor",b:"\\#[0-9A-F]+"},{cN:"important",b:"!important"}]}}]}]}]}}}(hljs);hljs.LANGUAGES.xml=function(a){var c="[A-Za-z0-9\\._:-]+";var b={eW:true,c:[{cN:"attribute",b:c,r:0},{b:'="',rB:true,e:'"',c:[{cN:"value",b:'"',eW:true}]},{b:"='",rB:true,e:"'",c:[{cN:"value",b:"'",eW:true}]},{b:"=",c:[{cN:"value",b:"[^\\s/>]+"}]}]};return{cI:true,dM:{c:[{cN:"doctype",b:"<!DOCTYPE",e:">",r:10,c:[{b:"\\[",e:"\\]"}]},{cN:"comment",b:"<!--",e:"-->",r:10},{cN:"cdata",b:"<\\!\\[CDATA\\[",e:"\\]\\]>",r:10},{cN:"tag",b:"<style(?=\\s|>|$)",e:">",k:{title:"style"},c:[b],starts:{e:"</style>",rE:true,sL:"css"}},{cN:"tag",b:"<script(?=\\s|>|$)",e:">",k:{title:"script"},c:[b],starts:{e:"<\/script>",rE:true,sL:"javascript"}},{b:"<%",e:"%>",sL:"vbscript"},{b:"<\\?php",e:"\\?>",sL:"php"},{cN:"pi",b:"<\\?",e:"\\?>",r:10},{cN:"tag",b:"</?",e:"/?>",c:[{cN:"title",b:"[^ />]+"},b]}]}}}(hljs);hljs.LANGUAGES.profile=function(a){return{dM:{c:[a.CNM,{cN:"builtin",b:"{",e:"}$",eB:true,eE:true,c:[a.ASM,a.QSM],r:0},{cN:"filename",b:"[a-zA-Z_][\\da-zA-Z_]+\\.[\\da-zA-Z_]{1,3}",e:":",eE:true},{cN:"header",b:"(ncalls|tottime|cumtime)",e:"$",k:"ncalls tottime|10 cumtime|10 filename",r:10},{cN:"summary",b:"function calls",e:"$",c:[a.CNM],r:10},a.ASM,a.QSM,{cN:"function",b:"\\(",e:"\\)$",c:[{cN:"title",b:a.UIR,r:0}],r:0}]}}}(hljs);hljs.LANGUAGES.http=function(a){return{dM:{i:"\\S",c:[{cN:"status",b:"^HTTP/[0-9\\.]+",e:"$",c:[{cN:"number",b:"\\b\\d{3}\\b"}]},{cN:"request",b:"^[A-Z]+ (.*?) HTTP/[0-9\\.]+$",rB:true,e:"$",c:[{cN:"string",b:" ",e:" ",eB:true,eE:true}]},{cN:"attribute",b:"^\\w",e:": ",eE:true,i:"\\n",starts:{cN:"string",e:"$"}},{b:"\\n\\n",starts:{sL:"",eW:true}}]}}}(hljs);hljs.LANGUAGES.java=function(a){return{dM:{k:"false synchronized int abstract float private char boolean static null if const for true while long throw strictfp finally protected import native final return void enum else break transient new catch instanceof byte super volatile case assert short package default double public try this switch continue throws",c:[{cN:"javadoc",b:"/\\*\\*",e:"\\*/",c:[{cN:"javadoctag",b:"@[A-Za-z]+"}],r:10},a.CLCM,a.CBLCLM,a.ASM,a.QSM,{cN:"class",bWK:true,e:"{",k:"class interface",i:":",c:[{bWK:true,k:"extends implements",r:10},{cN:"title",b:a.UIR}]},a.CNM,{cN:"annotation",b:"@[A-Za-z]+"}]}}}(hljs);hljs.LANGUAGES.php=function(a){var e={cN:"variable",b:"\\$+[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*"};var b=[a.inherit(a.ASM,{i:null}),a.inherit(a.QSM,{i:null}),{cN:"string",b:'b"',e:'"',c:[a.BE]},{cN:"string",b:"b'",e:"'",c:[a.BE]}];var c=[a.CNM,a.BNM];var d={cN:"title",b:a.UIR};return{cI:true,dM:{k:"false null true __CLASS__ __FILE__ __FUNCTION__ __LINE__ __METHOD__ and or && || as break case continue default do else elseif endfor endforeach endif endswitch endwhile for foreach if include include_once require require_once return switch throw while echo print abs acos acosh addcslashes addslashes aggregate aggregate_methods aggregate_methods_by_list aggregate_methods_by_regexp aggregate_properties aggregate_properties_by_list aggregate_properties_by_regexp aggregation_info apache_child_terminate apache_get_modules apache_get_version apache_getenv apache_lookup_uri apache_note apache_request_headers apache_response_headers apache_setenv array array_change_key_case array_chunk array_combine array_count_values array_diff array_diff_assoc array_diff_key array_diff_uassoc array_diff_ukey array_fill array_fill_keys array_filter array_flip array_intersect array_intersect_assoc array_intersect_key array_intersect_uassoc array_intersect_ukey array_key_exists array_keys array_map array_merge array_merge_recursive array_multisort array_pad array_pop array_product array_push array_rand array_reduce array_reverse array_search array_shift array_slice array_splice array_sum array_udiff array_udiff_assoc array_udiff_uassoc array_uintersect array_uintersect_assoc array_uintersect_uassoc array_unique array_unshift array_values array_walk array_walk_recursive arsort asin asinh asort assert assert_options atan atan2 atanh base_convert base64_decode base64_encode basename bcadd bccomp bcdiv bcmod bcmul bcompiler_load bcompiler_load_exe bcompiler_parse_class bcompiler_read bcompiler_write_class bcompiler_write_constant bcompiler_write_exe_footer bcompiler_write_file bcompiler_write_footer bcompiler_write_function bcompiler_write_functions_from_file bcompiler_write_header bcompiler_write_included_filename bcpow bcpowmod bcscale bcsqrt bcsub bin2hex bindec bindtextdomain cal_days_in_month cal_from_jd cal_info cal_to_jd call_user_func call_user_func_array call_user_method call_user_method_array ceil chdir checkdate checkdnsrr chgrp chmod chop chown chr chunk_split class_exists class_implements class_parents classkit_aggregate_methods classkit_doc_comments classkit_import classkit_method_add classkit_method_copy classkit_method_redefine classkit_method_remove classkit_method_rename clearstatcache closedir closelog com_create_guid com_event_sink com_get_active_object com_load_typelib com_message_pump com_print_typeinfo compact confirm_phpdoc_compiled connection_aborted connection_status constant convert_cyr_string convert_uudecode convert_uuencode copy cos cosh count count_chars cpdf_add_annotation crack_check crack_closedict crack_getlastmessage crack_opendict crc32 create_function crypt ctype_alnum ctype_alpha ctype_cntrl ctype_digit ctype_graph ctype_lower ctype_print ctype_punct ctype_space ctype_upper ctype_xdigit curl_close curl_copy_handle curl_errno curl_error curl_exec curl_getinfo curl_init curl_multi_add_handle curl_multi_close curl_multi_exec curl_multi_getcontent curl_multi_info_read curl_multi_init curl_multi_remove_handle curl_multi_select curl_setopt curl_setopt_array curl_version current cvsclient_connect cvsclient_log cvsclient_login cvsclient_retrieve date date_create date_date_set date_default_timezone_get date_default_timezone_set date_format date_isodate_set date_modify date_offset_get date_parse date_sun_info date_sunrise date_sunset date_time_set date_timezone_get date_timezone_set db_id_list decbin dechex decoct define defined define_syslog_variables deg2rad dgettext die dio_close dio_open dio_read dio_seek dio_stat dio_write dir dirname disk_free_space disk_total_space diskfreespace dl dngettext docblock_token_name docblock_tokenize dom_import_simplexml domxml_add_root domxml_attributes domxml_children domxml_doc_add_root domxml_doc_document_element domxml_doc_get_element_by_id domxml_doc_get_elements_by_tagname domxml_doc_get_root domxml_doc_set_root domxml_doc_validate domxml_doc_xinclude domxml_dump_mem domxml_dump_mem_file domxml_dump_node domxml_dumpmem domxml_elem_get_attribute domxml_elem_set_attribute domxml_get_attribute domxml_getattr domxml_html_dump_mem domxml_new_child domxml_new_doc domxml_new_xmldoc domxml_node domxml_node_add_namespace domxml_node_attributes domxml_node_children domxml_node_get_content domxml_node_has_attributes domxml_node_new_child domxml_node_set_content domxml_node_set_namespace domxml_node_unlink_node domxml_open_file domxml_open_mem domxml_parser domxml_parser_add_chunk domxml_parser_cdata_section domxml_parser_characters domxml_parser_comment domxml_parser_end domxml_parser_end_document domxml_parser_end_element domxml_parser_entity_reference domxml_parser_get_document domxml_parser_namespace_decl domxml_parser_processing_instruction domxml_parser_start_document domxml_parser_start_element domxml_root domxml_set_attribute domxml_setattr domxml_substitute_entities_default domxml_unlink_node domxml_version domxml_xmltree doubleval each easter_date easter_days empty end ereg ereg_replace eregi eregi_replace error_get_last error_log error_reporting escapeshellarg escapeshellcmd eval event_deschedule event_dispatch event_free event_handle_signal event_have_events event_init event_new event_pending event_priority_set event_schedule event_set event_timeout exec exif_imagetype exif_read_data exif_tagname exif_thumbnail exit exp explode expm1 extension_loaded extract ezmlm_hash fclose feof fflush fgetc fgetcsv fgets fgetss file file_exists file_get_contents file_put_contents fileatime filectime filegroup fileinode filemtime fileowner fileperms filepro filepro_fieldcount filepro_fieldname filepro_fieldtype filepro_fieldwidth filepro_retrieve filepro_rowcount filesize filetype filter_has_var filter_id filter_input filter_input_array filter_list filter_var filter_var_array finfo_buffer finfo_close finfo_file finfo_open finfo_set_flags floatval flock floor flush fmod fnmatch fopen fpassthru fprintf fputcsv fputs fread frenchtojd fribidi_charset_info fribidi_get_charsets fribidi_log2vis fscanf fseek fsockopen fstat ftell ftok ftp_alloc ftp_cdup ftp_chdir ftp_chmod ftp_close ftp_connect ftp_delete ftp_exec ftp_fget ftp_fput ftp_get ftp_get_option ftp_login ftp_mdtm ftp_mkdir ftp_nb_continue ftp_nb_fget ftp_nb_fput ftp_nb_get ftp_nb_put ftp_nlist ftp_pasv ftp_put ftp_pwd ftp_quit ftp_raw ftp_rawlist ftp_rename ftp_rmdir ftp_set_option ftp_site ftp_size ftp_ssl_connect ftp_systype ftruncate function_exists func_get_arg func_get_args func_num_args fwrite gd_info getallheaders getcwd getdate getenv gethostbyaddr gethostbyname gethostbynamel getimagesize getlastmod getmxrr getmygid getmyinode getmypid getmyuid getopt getprotobyname getprotobynumber getrandmax getrusage getservbyname getservbyport gettext gettimeofday gettype get_browser get_cfg_var get_class get_class_methods get_class_vars get_current_user get_declared_classes get_defined_constants get_defined_functions get_defined_vars get_extension_funcs get_headers get_html_translation_table get_included_files get_include_path get_loaded_extensions get_magic_quotes_gpc get_magic_quotes_runtime get_meta_tags get_object_vars get_parent_class get_required_files get_resource_type glob gmdate gmmktime gmstrftime gopher_parsedir gregoriantojd gzclose gzcompress gzdeflate gzencode gzeof gzfile gzgetc gzgets gzgetss gzinflate gzopen gzpassthru gzputs gzread gzrewind gzseek gztell gzuncompress gzwrite hash hash_algos hash_file hash_final hash_hmac hash_hmac_file hash_init hash_update hash_update_file hash_update_stream header headers_list headers_sent hebrev hebrevc hexdec highlight_file highlight_string html_doc html_doc_file html_entity_decode htmlentities htmlspecialchars htmlspecialchars_decode http_build_cookie http_build_query http_build_str http_build_url http_cache_etag http_cache_last_modified http_chunked_decode http_date http_deflate http_get http_get_request_body http_get_request_body_stream http_get_request_headers http_head http_inflate http_match_etag http_match_modified http_match_request_header http_negotiate_charset http_negotiate_content_type http_negotiate_language http_parse_cookie http_parse_headers http_parse_message http_parse_params http_persistent_handles_clean http_persistent_handles_count http_persistent_handles_ident http_post_data http_post_fields http_put_data http_put_file http_put_stream http_redirect http_request http_request_body_encode http_request_method_exists http_request_method_name http_request_method_register http_request_method_unregister http_send_content_disposition http_send_content_type http_send_data http_send_file http_send_last_modified http_send_status http_send_stream http_support http_throttle hypot i18n_convert i18n_discover_encoding i18n_http_input i18n_http_output i18n_internal_encoding i18n_ja_jp_hantozen i18n_mime_header_decode i18n_mime_header_encode ibase_add_user ibase_affected_rows ibase_backup ibase_blob_add ibase_blob_cancel ibase_blob_close ibase_blob_create ibase_blob_echo ibase_blob_get ibase_blob_import ibase_blob_info ibase_blob_open ibase_close ibase_commit ibase_commit_ret ibase_connect ibase_db_info ibase_delete_user ibase_drop_db ibase_errcode ibase_errmsg ibase_execute ibase_fetch_assoc ibase_fetch_object ibase_fetch_row ibase_field_info ibase_free_event_handler ibase_free_query ibase_free_result ibase_gen_id ibase_maintain_db ibase_modify_user ibase_name_result ibase_num_fields ibase_num_params ibase_param_info ibase_pconnect ibase_prepare ibase_query ibase_restore ibase_rollback ibase_rollback_ret ibase_server_info ibase_service_attach ibase_service_detach ibase_set_event_handler ibase_trans ibase_wait_event iconv iconv_get_encoding iconv_mime_decode iconv_mime_decode_headers iconv_mime_encode iconv_set_encoding iconv_strlen iconv_strpos iconv_strrpos iconv_substr id3_get_frame_long_name id3_get_frame_short_name id3_get_genre_id id3_get_genre_list id3_get_genre_name id3_get_tag id3_get_version id3_remove_tag id3_set_tag idate ignore_user_abort image_type_to_extension image_type_to_mime_type image2wbmp imagealphablending imageantialias imagearc imagechar imagecharup imagecolorallocate imagecolorallocatealpha imagecolorat imagecolorclosest imagecolorclosestalpha imagecolordeallocate imagecolorexact imagecolorexactalpha imagecolormatch imagecolorresolve imagecolorresolvealpha imagecolorset imagecolorsforindex imagecolorstotal imagecolortransparent imageconvolution imagecopy imagecopymerge imagecopymergegray imagecopyresampled imagecopyresized imagecreate imagecreatefromgd imagecreatefromgd2 imagecreatefromgd2part imagecreatefromgif imagecreatefromjpeg imagecreatefrompng imagecreatefromstring imagecreatefromwbmp imagecreatefromxbm imagecreatetruecolor imagedashedline imagedestroy imageellipse imagefill imagefilledarc imagefilledellipse imagefilledpolygon imagefilledrectangle imagefilltoborder imagefilter imagefontheight imagefontwidth imageftbbox imagefttext imagegammacorrect imagegd imagegd2 imagegif imagegrabscreen imagegrabwindow imageinterlace imageistruecolor imagejpeg imagelayereffect imageline imageloadfont imagepalettecopy imagepng imagepolygon imagepsbbox imagepsencodefont imagepsextendfont imagepsfreefont imagepsloadfont imagepsslantfont imagepstext imagerectangle imagerotate imagesavealpha imagesetbrush imagesetpixel imagesetstyle imagesetthickness imagesettile imagestring imagestringup imagesx imagesy imagetruecolortopalette imagettfbbox imagettftext imagetypes imagewbmp imagexbm implode import_request_variables in_array ini_alter ini_get ini_get_all ini_restore ini_set intval ip2long iptcembed iptcparse isset is_a is_array is_bool is_callable is_dir is_double is_executable is_file is_finite is_float is_infinite is_int is_integer is_link is_long is_nan is_null is_numeric is_object is_readable is_real is_resource is_scalar is_soap_fault is_string is_subclass_of is_uploaded_file is_writable is_writeable iterator_apply iterator_count iterator_to_array java_last_exception_clear java_last_exception_get jddayofweek jdmonthname jdtofrench jdtogregorian jdtojewish jdtojulian jdtounix jewishtojd join jpeg2wbmp json_decode json_encode juliantojd key key_exists krsort ksort lcg_value  levenshtein libxml_clear_errors libxml_get_errors libxml_get_last_error libxml_set_streams_context libxml_use_internal_errors link linkinfo list localeconv localtime log log1p log10 long2ip lstat ltrim lzf_compress lzf_decompress lzf_optimized_for magic_quotes_runtime mail max mbereg mberegi mberegi_replace mbereg_match mbereg_replace mbereg_search mbereg_search_getpos mbereg_search_getregs mbereg_search_init mbereg_search_pos mbereg_search_regs mbereg_search_setpos mbregex_encoding mbsplit mbstrcut mbstrlen mbstrpos mbstrrpos mbsubstr mb_check_encoding mb_convert_case mb_convert_encoding mb_convert_kana mb_convert_variables mb_decode_mimeheader mb_decode_numericentity mb_detect_encoding mb_detect_order mb_encode_mimeheader mb_encode_numericentity mb_ereg mb_eregi mb_eregi_replace mb_ereg_match mb_ereg_replace mb_ereg_search mb_ereg_search_getpos mb_ereg_search_getregs mb_ereg_search_init mb_ereg_search_pos mb_ereg_search_regs mb_ereg_search_setpos mb_get_info mb_http_input mb_http_output mb_internal_encoding mb_language mb_list_encodings mb_output_handler mb_parse_str mb_preferred_mime_name mb_regex_encoding mb_regex_set_options mb_send_mail mb_split mb_strcut mb_strimwidth mb_stripos mb_stristr mb_strlen mb_strpos mb_strrchr mb_strrichr mb_strripos mb_strrpos mb_strstr mb_strtolower mb_strtoupper mb_strwidth mb_substitute_character mb_substr mb_substr_count mcrypt_cbc mcrypt_cfb mcrypt_create_iv mcrypt_decrypt mcrypt_ecb mcrypt_enc_get_algorithms_name mcrypt_enc_get_block_size mcrypt_enc_get_iv_size mcrypt_enc_get_key_size mcrypt_enc_get_modes_name mcrypt_enc_get_supported_key_sizes mcrypt_enc_is_block_algorithm mcrypt_enc_is_block_algorithm_mode mcrypt_enc_is_block_mode mcrypt_enc_self_test mcrypt_encrypt mcrypt_generic mcrypt_generic_deinit mcrypt_generic_end mcrypt_generic_init mcrypt_get_block_size mcrypt_get_cipher_name mcrypt_get_iv_size mcrypt_get_key_size mcrypt_list_algorithms mcrypt_list_modes mcrypt_module_close mcrypt_module_get_algo_block_size mcrypt_module_get_algo_key_size mcrypt_module_get_supported_key_sizes mcrypt_module_is_block_algorithm mcrypt_module_is_block_algorithm_mode mcrypt_module_is_block_mode mcrypt_module_open mcrypt_module_self_test mcrypt_ofb md5 md5_file mdecrypt_generic memcache_add memcache_add_server memcache_close memcache_connect memcache_debug memcache_decrement memcache_delete memcache_flush memcache_get memcache_get_extended_stats memcache_get_server_status memcache_get_stats memcache_get_version memcache_increment memcache_pconnect memcache_replace memcache_set memcache_set_compress_threshold memcache_set_server_params memory_get_peak_usage memory_get_usage metaphone mhash mhash_count mhash_get_block_size mhash_get_hash_name mhash_keygen_s2k method_exists microtime mime_content_type min ming_keypress ming_setcubicthreshold ming_setscale ming_useconstants ming_useswfversion mkdir mktime money_format move_uploaded_file mt_getrandmax mt_rand mt_srand mysql mysql_affected_rows mysql_client_encoding mysql_close mysql_connect mysql_createdb mysql_create_db mysql_data_seek mysql_dbname mysql_db_name mysql_db_query mysql_dropdb mysql_drop_db mysql_errno mysql_error mysql_escape_string mysql_fetch_array mysql_fetch_assoc mysql_fetch_field mysql_fetch_lengths mysql_fetch_object mysql_fetch_row mysql_fieldflags mysql_fieldlen mysql_fieldname mysql_fieldtable mysql_fieldtype mysql_field_flags mysql_field_len mysql_field_name mysql_field_seek mysql_field_table mysql_field_type mysql_freeresult mysql_free_result mysql_get_client_info mysql_get_host_info mysql_get_proto_info mysql_get_server_info mysql_info mysql_insert_id mysql_listdbs mysql_listfields mysql_listtables mysql_list_dbs mysql_list_fields mysql_list_processes mysql_list_tables mysql_numfields mysql_numrows mysql_num_fields mysql_num_rows mysql_pconnect mysql_ping mysql_query mysql_real_escape_string mysql_result mysql_selectdb mysql_select_db mysql_set_charset mysql_stat mysql_tablename mysql_table_name mysql_thread_id mysql_unbuffered_query  natcasesort natsort new_xmldoc next ngettext nl2br nl_langinfo ntuser_getdomaincontroller ntuser_getusergroups ntuser_getuserinfo ntuser_getuserlist number_format ob_clean ob_deflatehandler ob_end_clean ob_end_flush ob_etaghandler ob_flush ob_get_clean ob_get_contents ob_get_flush ob_get_length ob_get_level ob_get_status ob_gzhandler ob_iconv_handler ob_implicit_flush ob_inflatehandler ob_list_handlers ob_start ob_tidyhandler octdec opendir openlog ord output_add_rewrite_var output_reset_rewrite_vars overload outputdebugstring pack parse_ini_file parse_str parse_url parsekit_compile_file parsekit_compile_string parsekit_func_arginfo parsekit_opcode_flags parsekit_opcode_name passthru pathinfo pclose pdo_drivers pfsockopen php_egg_logo_guid php_ini_loaded_file php_ini_scanned_files php_logo_guid php_real_logo_guid php_sapi_name php_strip_whitespace php_uname phpcredits phpdoc_xml_from_string phpinfo phpversion pi png2wbmp pop3_close pop3_delete_message pop3_get_account_size pop3_get_message pop3_get_message_count pop3_get_message_header pop3_get_message_ids pop3_get_message_size pop3_get_message_sizes pop3_open pop3_undelete popen pos posix_ctermid posix_errno posix_getcwd posix_getegid posix_geteuid posix_getgid posix_getgrgid posix_getgrnam posix_getgroups posix_getlogin posix_getpgid posix_getpgrp posix_getpid posix_getppid posix_getpwnam posix_getpwuid posix_getrlimit posix_getsid posix_getuid posix_get_last_error posix_isatty posix_kill posix_mkfifo posix_setegid posix_seteuid posix_setgid posix_setpgid posix_setsid posix_setuid posix_strerror posix_times posix_ttyname posix_uname pow preg_grep preg_last_error preg_match preg_match_all preg_quote preg_replace preg_replace_callback preg_split prev print_r printf proc_close proc_get_status proc_open proc_terminate putenv quoted_printable_decode quotemeta rad2deg radius_acct_open radius_add_server radius_auth_open radius_close radius_config radius_create_request radius_cvt_addr radius_cvt_int radius_cvt_string radius_demangle radius_demangle_mppe_key radius_get_attr radius_get_vendor_attr radius_put_addr radius_put_attr radius_put_int radius_put_string radius_put_vendor_addr radius_put_vendor_attr radius_put_vendor_int radius_put_vendor_string radius_request_authenticator radius_send_request radius_server_secret radius_strerror rand range rawurldecode rawurlencode read_exif_data readdir readfile readgzfile readlink realpath reg_close_key reg_create_key reg_enum_key reg_enum_value reg_get_value reg_open_key reg_set_value register_shutdown_function register_tick_function rename res_close res_get res_list res_list_type res_open res_set reset restore_error_handler restore_include_path rewind rewinddir rmdir round rsort rtrim scandir sem_acquire sem_get sem_release sem_remove serialize session_cache_expire session_cache_limiter session_commit session_decode session_destroy session_encode session_get_cookie_params session_id session_is_registered session_module_name session_name session_regenerate_id session_register session_save_path session_set_cookie_params session_set_save_handler session_start session_unregister session_unset session_write_close set_content set_error_handler set_file_buffer set_include_path set_magic_quotes_runtime set_socket_blocking set_time_limit setcookie setlocale setrawcookie settype sha1 sha1_file shell_exec shmop_close shmop_delete shmop_open shmop_read shmop_size shmop_write shm_attach shm_detach shm_get_var shm_put_var shm_remove shm_remove_var show_source shuffle similar_text simplexml_import_dom simplexml_load_file simplexml_load_string sin sinh sizeof sleep socket_accept socket_bind socket_clear_error socket_close socket_connect socket_create socket_create_listen socket_create_pair socket_getopt socket_getpeername socket_getsockname socket_get_option socket_get_status socket_iovec_add socket_iovec_alloc socket_iovec_delete socket_iovec_fetch socket_iovec_free socket_iovec_set socket_last_error socket_listen socket_read socket_readv socket_recv socket_recvfrom socket_recvmsg socket_select socket_send socket_sendmsg socket_sendto socket_setopt socket_set_block socket_set_blocking socket_set_nonblock socket_set_option socket_set_timeout socket_shutdown socket_strerror socket_write socket_writev sort soundex spl_autoload spl_autoload_call spl_autoload_extensions spl_autoload_functions spl_autoload_register spl_autoload_unregister spl_classes spl_object_hash split spliti sprintf sql_regcase sqrt srand sscanf ssh2_auth_hostbased_file ssh2_auth_none ssh2_auth_password ssh2_auth_pubkey_file ssh2_connect ssh2_exec ssh2_fetch_stream ssh2_fingerprint ssh2_forward_accept ssh2_forward_listen ssh2_methods_negotiated ssh2_poll ssh2_publickey_add ssh2_publickey_init ssh2_publickey_list ssh2_publickey_remove ssh2_scp_recv ssh2_scp_send ssh2_sftp ssh2_sftp_lstat ssh2_sftp_mkdir ssh2_sftp_readlink ssh2_sftp_realpath ssh2_sftp_rename ssh2_sftp_rmdir ssh2_sftp_stat ssh2_sftp_symlink ssh2_sftp_unlink ssh2_shell ssh2_tunnel stat strcasecmp strchr strcmp strcoll strcspn stream_bucket_append stream_bucket_make_writeable stream_bucket_new stream_bucket_prepend stream_context_create stream_context_get_default stream_context_get_options stream_context_set_default stream_context_set_option stream_context_set_params stream_copy_to_stream stream_encoding stream_filter_append stream_filter_prepend stream_filter_register stream_filter_remove stream_get_contents stream_get_filters stream_get_line stream_get_meta_data stream_get_transports stream_get_wrappers stream_is_local stream_notification_callback stream_register_wrapper stream_resolve_include_path stream_select stream_set_blocking stream_set_timeout stream_set_write_buffer stream_socket_accept stream_socket_client stream_socket_enable_crypto stream_socket_get_name stream_socket_pair stream_socket_recvfrom stream_socket_sendto stream_socket_server stream_socket_shutdown stream_supports_lock stream_wrapper_register stream_wrapper_restore stream_wrapper_unregister strftime stripcslashes stripos stripslashes strip_tags stristr strlen strnatcasecmp strnatcmp strpbrk strncasecmp strncmp strpos strrchr strrev strripos strrpos strspn strstr strtok strtolower strtotime strtoupper strtr strval str_ireplace str_pad str_repeat str_replace str_rot13 str_split str_shuffle str_word_count substr substr_compare substr_count substr_replace symlink sys_get_temp_dir syslog system tan tanh tempnam textdomain thread_get thread_include thread_lock thread_lock_try thread_mutex_destroy thread_mutex_init thread_set thread_start thread_unlock tidy_access_count tidy_clean_repair tidy_config_count tidy_diagnose tidy_error_count tidy_get_body tidy_get_config tidy_get_error_buffer tidy_get_head tidy_get_html tidy_get_html_ver tidy_get_output tidy_get_release tidy_get_root tidy_get_status tidy_getopt tidy_is_xhtml tidy_is_xml tidy_parse_file tidy_parse_string tidy_repair_file tidy_repair_string tidy_warning_count time timezone_abbreviations_list timezone_identifiers_list timezone_name_from_abbr timezone_name_get timezone_offset_get timezone_open timezone_transitions_get tmpfile token_get_all token_name touch trigger_error transliterate transliterate_filters_get trim uasort ucfirst ucwords uksort umask uniqid unixtojd unlink unpack unregister_tick_function unserialize unset urldecode urlencode user_error use_soap_error_handler usleep usort utf8_decode utf8_encode var_dump var_export variant_abs variant_add variant_and variant_cast variant_cat variant_cmp variant_date_from_timestamp variant_date_to_timestamp variant_div variant_eqv variant_fix variant_get_type variant_idiv variant_imp variant_int variant_mod variant_mul variant_neg variant_not variant_or variant_pow variant_round variant_set variant_set_type variant_sub variant_xor version_compare virtual vfprintf vprintf vsprintf wddx_add_vars wddx_deserialize wddx_packet_end wddx_packet_start wddx_serialize_value wddx_serialize_vars wordwrap xml_error_string xml_get_current_byte_index xml_get_current_column_number xml_get_current_line_number xml_get_error_code xml_parse xml_parser_create xml_parser_create_ns xml_parser_free xml_parser_get_option xml_parser_set_option xml_parse_into_struct xml_set_character_data_handler xml_set_default_handler xml_set_element_handler xml_set_end_namespace_decl_handler xml_set_external_entity_ref_handler xml_set_notation_decl_handler xml_set_object xml_set_processing_instruction_handler xml_set_start_namespace_decl_handler xml_set_unparsed_entity_decl_handler xmldoc xmldocfile xmlrpc_decode xmlrpc_decode_request xmlrpc_encode xmlrpc_encode_request xmlrpc_get_type xmlrpc_is_fault xmlrpc_parse_method_descriptions xmlrpc_server_add_introspection_data xmlrpc_server_call_method xmlrpc_server_create xmlrpc_server_destroy xmlrpc_server_register_introspection_callback xmlrpc_server_register_method xmlrpc_set_type xmltree xmlwriter_end_attribute xmlwriter_end_cdata xmlwriter_end_comment xmlwriter_end_document xmlwriter_end_dtd xmlwriter_end_dtd_attlist xptr_eval xptr_new_context yp_all yp_cat yp_errno yp_err_string yp_first yp_get_default_domain yp_master yp_match yp_next yp_order zend_current_obfuscation_level zend_get_cfg_var zend_get_id zend_loader_current_file zend_loader_enabled zend_loader_file_encoded zend_loader_file_licensed zend_loader_install_license zend_loader_version zend_logo_guid zend_match_hostmasks zend_obfuscate_class_name zend_obfuscate_function_name zend_optimizer_version zend_runtime_obfuscate zend_version zip_close zip_entry_close zip_entry_compressedsize zip_entry_compressionmethod zip_entry_filesize zip_entry_name zip_entry_open zip_entry_read zip_open zip_read zlib_get_coding_type",c:[a.CLCM,a.HCM,{cN:"comment",b:"/\\*",e:"\\*/",c:[{cN:"phpdoc",b:"\\s@[A-Za-z]+"}]},{cN:"comment",eB:true,b:"__halt_compiler.+?;",eW:true},{cN:"string",b:"<<<['\"]?\\w+['\"]?$",e:"^\\w+;",c:[a.BE]},{cN:"preprocessor",b:"<\\?php",r:10},{cN:"preprocessor",b:"\\?>"},e,{cN:"function",bWK:true,e:"{",k:"function",i:"\\$|\\[|%",c:[d,{cN:"params",b:"\\(",e:"\\)",c:["self",e,a.CBLCLM].concat(b).concat(c)}]},{cN:"class",bWK:true,e:"{",k:"class",i:"[:\\(\\$]",c:[{bWK:true,eW:true,k:"extends",c:[d]},d]},{b:"=>"}].concat(b).concat(c)}}}(hljs);hljs.LANGUAGES.python=function(a){var c=[{cN:"string",b:"(u|b)?r?'''",e:"'''",r:10},{cN:"string",b:'(u|b)?r?"""',e:'"""',r:10},{cN:"string",b:"(u|r|ur)'",e:"'",c:[a.BE],r:10},{cN:"string",b:'(u|r|ur)"',e:'"',c:[a.BE],r:10},{cN:"string",b:"(b|br)'",e:"'",c:[a.BE]},{cN:"string",b:'(b|br)"',e:'"',c:[a.BE]}].concat([a.ASM,a.QSM]);var e={cN:"title",b:a.UIR};var d={cN:"params",b:"\\(",e:"\\)",c:["self",a.CNM].concat(c)};var b={bWK:true,e:":",i:"[${=;\\n]",c:[e,d],r:10};return{dM:{k:{keyword:"and elif is global as in if from raise for except finally print import pass return exec else break not with class assert yield try while continue del or def lambda nonlocal|10",built_in:"None True False Ellipsis NotImplemented"},i:"(</|->|\\?)",c:c.concat([a.HCM,a.inherit(b,{cN:"function",k:"def"}),a.inherit(b,{cN:"class",k:"class"}),a.CNM,{cN:"decorator",b:"@",e:"$"},{b:"\\b(print|exec)\\("}])}}}(hljs);hljs.LANGUAGES.tex=function(a){var d={cN:"command",b:"\\\\[a-zA-Zа-яА-я]+[\\*]?"};var c={cN:"command",b:"\\\\[^a-zA-Zа-яА-я0-9]"};var b={cN:"special",b:"[{}\\[\\]\\&#~]",r:0};return{dM:{c:[{b:"\\\\[a-zA-Zа-яА-я]+[\\*]? *= *-?\\d*\\.?\\d+(pt|pc|mm|cm|in|dd|cc|ex|em)?",rB:true,c:[d,c,{cN:"number",b:" *=",e:"-?\\d*\\.?\\d+(pt|pc|mm|cm|in|dd|cc|ex|em)?",eB:true}],r:10},d,c,b,{cN:"formula",b:"\\$\\$",e:"\\$\\$",c:[d,c,b],r:0},{cN:"formula",b:"\\$",e:"\\$",c:[d,c,b],r:0},{cN:"comment",b:"%",e:"$",r:0}]}}}(hljs);hljs.LANGUAGES.actionscript=function(a){var d="[a-zA-Z_$][a-zA-Z0-9_$]*";var c="([*]|[a-zA-Z_$][a-zA-Z0-9_$]*)";var e={cN:"rest_arg",b:"[.]{3}",e:d,r:10};var b={cN:"title",b:d};return{dM:{k:{keyword:"as break case catch class const continue default delete do dynamic each else extends final finally for function get if implements import in include instanceof interface internal is namespace native new override package private protected public return set static super switch this throw try typeof use var void while with",literal:"true false null undefined"},c:[a.ASM,a.QSM,a.CLCM,a.CBLCLM,a.CNM,{cN:"package",bWK:true,e:"{",k:"package",c:[b]},{cN:"class",bWK:true,e:"{",k:"class interface",c:[{bWK:true,k:"extends implements"},b]},{cN:"preprocessor",bWK:true,e:";",k:"import include"},{cN:"function",bWK:true,e:"[{;]",k:"function",i:"\\S",c:[b,{cN:"params",b:"\\(",e:"\\)",c:[a.ASM,a.QSM,a.CLCM,a.CBLCLM,e]},{cN:"type",b:":",e:c,r:10}]}]}}}(hljs);hljs.LANGUAGES.sql=function(a){return{cI:true,dM:{i:"[^\\s]",c:[{cN:"operator",b:"(begin|start|commit|rollback|savepoint|lock|alter|create|drop|rename|call|delete|do|handler|insert|load|replace|select|truncate|update|set|show|pragma|grant)\\b",e:";",eW:true,k:{keyword:"all partial global month current_timestamp using go revoke smallint indicator end-exec disconnect zone with character assertion to add current_user usage input local alter match collate real then rollback get read timestamp session_user not integer bit unique day minute desc insert execute like ilike|2 level decimal drop continue isolation found where constraints domain right national some module transaction relative second connect escape close system_user for deferred section cast current sqlstate allocate intersect deallocate numeric public preserve full goto initially asc no key output collation group by union session both last language constraint column of space foreign deferrable prior connection unknown action commit view or first into float year primary cascaded except restrict set references names table outer open select size are rows from prepare distinct leading create only next inner authorization schema corresponding option declare precision immediate else timezone_minute external varying translation true case exception join hour default double scroll value cursor descriptor values dec fetch procedure delete and false int is describe char as at in varchar null trailing any absolute current_time end grant privileges when cross check write current_date pad begin temporary exec time update catalog user sql date on identity timezone_hour natural whenever interval work order cascade diagnostics nchar having left call do handler load replace truncate start lock show pragma",aggregate:"count sum min max avg"},c:[{cN:"string",b:"'",e:"'",c:[a.BE,{b:"''"}],r:0},{cN:"string",b:'"',e:'"',c:[a.BE,{b:'""'}],r:0},{cN:"string",b:"`",e:"`",c:[a.BE]},a.CNM]},a.CBLCLM,{cN:"comment",b:"--",e:"$"}]}}}(hljs);hljs.LANGUAGES.ini=function(a){return{cI:true,dM:{i:"[^\\s]",c:[{cN:"comment",b:";",e:"$"},{cN:"title",b:"^\\[",e:"\\]"},{cN:"setting",b:"^[a-z0-9_\\[\\]]+[ \\t]*=[ \\t]*",e:"$",c:[{cN:"value",eW:true,k:"on off true false yes no",c:[a.QSM,a.NM]}]}]}}}(hljs);hljs.LANGUAGES.perl=function(e){var a="getpwent getservent quotemeta msgrcv scalar kill dbmclose undef lc ma syswrite tr send umask sysopen shmwrite vec qx utime local oct semctl localtime readpipe do return format read sprintf dbmopen pop getpgrp not getpwnam rewinddir qqfileno qw endprotoent wait sethostent bless s|0 opendir continue each sleep endgrent shutdown dump chomp connect getsockname die socketpair close flock exists index shmgetsub for endpwent redo lstat msgctl setpgrp abs exit select print ref gethostbyaddr unshift fcntl syscall goto getnetbyaddr join gmtime symlink semget splice x|0 getpeername recv log setsockopt cos last reverse gethostbyname getgrnam study formline endhostent times chop length gethostent getnetent pack getprotoent getservbyname rand mkdir pos chmod y|0 substr endnetent printf next open msgsnd readdir use unlink getsockopt getpriority rindex wantarray hex system getservbyport endservent int chr untie rmdir prototype tell listen fork shmread ucfirst setprotoent else sysseek link getgrgid shmctl waitpid unpack getnetbyname reset chdir grep split require caller lcfirst until warn while values shift telldir getpwuid my getprotobynumber delete and sort uc defined srand accept package seekdir getprotobyname semop our rename seek if q|0 chroot sysread setpwent no crypt getc chown sqrt write setnetent setpriority foreach tie sin msgget map stat getlogin unless elsif truncate exec keys glob tied closedirioctl socket readlink eval xor readline binmode setservent eof ord bind alarm pipe atan2 getgrent exp time push setgrent gt lt or ne m|0";var d={cN:"subst",b:"[$@]\\{",e:"\\}",k:a,r:10};var b={cN:"variable",b:"\\$\\d"};var i={cN:"variable",b:"[\\$\\%\\@\\*](\\^\\w\\b|#\\w+(\\:\\:\\w+)*|[^\\s\\w{]|{\\w+}|\\w+(\\:\\:\\w*)*)"};var f=[e.BE,d,b,i];var h={b:"->",c:[{b:e.IR},{b:"{",e:"}"}]};var g={cN:"comment",b:"^(__END__|__DATA__)",e:"\\n$",r:5};var c=[b,i,e.HCM,g,{cN:"comment",b:"^\\=\\w",e:"\\=cut",eW:true},h,{cN:"string",b:"q[qwxr]?\\s*\\(",e:"\\)",c:f,r:5},{cN:"string",b:"q[qwxr]?\\s*\\[",e:"\\]",c:f,r:5},{cN:"string",b:"q[qwxr]?\\s*\\{",e:"\\}",c:f,r:5},{cN:"string",b:"q[qwxr]?\\s*\\|",e:"\\|",c:f,r:5},{cN:"string",b:"q[qwxr]?\\s*\\<",e:"\\>",c:f,r:5},{cN:"string",b:"qw\\s+q",e:"q",c:f,r:5},{cN:"string",b:"'",e:"'",c:[e.BE],r:0},{cN:"string",b:'"',e:'"',c:f,r:0},{cN:"string",b:"`",e:"`",c:[e.BE]},{cN:"string",b:"{\\w+}",r:0},{cN:"string",b:"-?\\w+\\s*\\=\\>",r:0},{cN:"number",b:"(\\b0[0-7_]+)|(\\b0x[0-9a-fA-F_]+)|(\\b[1-9][0-9_]*(\\.[0-9_]+)?)|[0_]\\b",r:0},{b:"("+e.RSR+"|\\b(split|return|print|reverse|grep)\\b)\\s*",k:"split return print reverse grep",r:0,c:[e.HCM,g,{cN:"regexp",b:"(s|tr|y)/(\\\\.|[^/])*/(\\\\.|[^/])*/[a-z]*",r:10},{cN:"regexp",b:"(m|qr)?/",e:"/[a-z]*",c:[e.BE],r:0}]},{cN:"sub",bWK:true,e:"(\\s*\\(.*?\\))?[;{]",k:"sub",r:5},{cN:"operator",b:"-\\w\\b",r:0}];d.c=c;h.c[1].c=c;return{dM:{k:a,c:c}}}(hljs);hljs.LANGUAGES.objectivec=function(a){var b={keyword:"int float while private char catch export sizeof typedef const struct for union unsigned long volatile static protected bool mutable if public do return goto void enum else break extern class asm case short default double throw register explicit signed typename try this switch continue wchar_t inline readonly assign property protocol self synchronized end synthesize id optional required implementation nonatomic interface super unichar finally dynamic IBOutlet IBAction selector strong weak readonly",literal:"false true FALSE TRUE nil YES NO NULL",built_in:"NSString NSDictionary CGRect CGPoint UIButton UILabel UITextView UIWebView MKMapView UISegmentedControl NSObject UITableViewDelegate UITableViewDataSource NSThread UIActivityIndicator UITabbar UIToolBar UIBarButtonItem UIImageView NSAutoreleasePool UITableView BOOL NSInteger CGFloat NSException NSLog NSMutableString NSMutableArray NSMutableDictionary NSURL NSIndexPath CGSize UITableViewCell UIView UIViewController UINavigationBar UINavigationController UITabBarController UIPopoverController UIPopoverControllerDelegate UIImage NSNumber UISearchBar NSFetchedResultsController NSFetchedResultsChangeType UIScrollView UIScrollViewDelegate UIEdgeInsets UIColor UIFont UIApplication NSNotFound NSNotificationCenter NSNotification UILocalNotification NSBundle NSFileManager NSTimeInterval NSDate NSCalendar NSUserDefaults UIWindow NSRange NSArray NSError NSURLRequest NSURLConnection class UIInterfaceOrientation MPMoviePlayerController dispatch_once_t dispatch_queue_t dispatch_sync dispatch_async dispatch_once"};return{dM:{k:b,i:"</",c:[a.CLCM,a.CBLCLM,a.CNM,a.QSM,{cN:"string",b:"'",e:"[^\\\\]'",i:"[^\\\\][^']"},{cN:"preprocessor",b:"#import",e:"$",c:[{cN:"title",b:'"',e:'"'},{cN:"title",b:"<",e:">"}]},{cN:"preprocessor",b:"#",e:"$"},{cN:"class",bWK:true,e:"({|$)",k:"interface class protocol implementation",c:[{cN:"id",b:a.UIR}]},{cN:"variable",b:"\\."+a.UIR}]}}}(hljs);hljs.LANGUAGES.avrasm=function(a){return{cI:true,dM:{k:{keyword:"adc add adiw and andi asr bclr bld brbc brbs brcc brcs break breq brge brhc brhs brid brie brlo brlt brmi brne brpl brsh brtc brts brvc brvs bset bst call cbi cbr clc clh cli cln clr cls clt clv clz com cp cpc cpi cpse dec eicall eijmp elpm eor fmul fmuls fmulsu icall ijmp in inc jmp ld ldd ldi lds lpm lsl lsr mov movw mul muls mulsu neg nop or ori out pop push rcall ret reti rjmp rol ror sbc sbr sbrc sbrs sec seh sbi sbci sbic sbis sbiw sei sen ser ses set sev sez sleep spm st std sts sub subi swap tst wdr",built_in:"r0 r1 r2 r3 r4 r5 r6 r7 r8 r9 r10 r11 r12 r13 r14 r15 r16 r17 r18 r19 r20 r21 r22 r23 r24 r25 r26 r27 r28 r29 r30 r31 x|0 xh xl y|0 yh yl z|0 zh zl ucsr1c udr1 ucsr1a ucsr1b ubrr1l ubrr1h ucsr0c ubrr0h tccr3c tccr3a tccr3b tcnt3h tcnt3l ocr3ah ocr3al ocr3bh ocr3bl ocr3ch ocr3cl icr3h icr3l etimsk etifr tccr1c ocr1ch ocr1cl twcr twdr twar twsr twbr osccal xmcra xmcrb eicra spmcsr spmcr portg ddrg ping portf ddrf sreg sph spl xdiv rampz eicrb eimsk gimsk gicr eifr gifr timsk tifr mcucr mcucsr tccr0 tcnt0 ocr0 assr tccr1a tccr1b tcnt1h tcnt1l ocr1ah ocr1al ocr1bh ocr1bl icr1h icr1l tccr2 tcnt2 ocr2 ocdr wdtcr sfior eearh eearl eedr eecr porta ddra pina portb ddrb pinb portc ddrc pinc portd ddrd pind spdr spsr spcr udr0 ucsr0a ucsr0b ubrr0l acsr admux adcsr adch adcl porte ddre pine pinf"},c:[a.CBLCLM,{cN:"comment",b:";",e:"$"},a.CNM,a.BNM,{cN:"number",b:"\\b(\\$[a-zA-Z0-9]+|0o[0-7]+)"},a.QSM,{cN:"string",b:"'",e:"[^\\\\]'",i:"[^\\\\][^']"},{cN:"label",b:"^[A-Za-z0-9_.$]+:"},{cN:"preprocessor",b:"#",e:"$"},{cN:"preprocessor",b:"\\.[a-zA-Z]+"},{cN:"localvars",b:"@[0-9]+"}]}}}(hljs);hljs.LANGUAGES.json=function(a){var e={literal:"true false null"};var d=[a.QSM,a.CNM];var c={cN:"value",e:",",eW:true,eE:true,c:d,k:e};var b={b:"{",e:"}",c:[{cN:"attribute",b:'\\s*"',e:'"\\s*:\\s*',eB:true,eE:true,c:[a.BE],i:"\\n",starts:c}],i:"\\S"};var f={b:"\\[",e:"\\]",c:[a.inherit(c,{cN:null})],i:"\\S"};d.splice(d.length,0,b,f);return{dM:{c:d,k:e,i:"\\S"}}}(hljs);hljs.LANGUAGES.delphi=function(b){var f="and safecall cdecl then string exports library not pascal set virtual file in array label packed end. index while const raise for to implementation with except overload destructor downto finally program exit unit inherited override if type until function do begin repeat goto nil far initialization object else var uses external resourcestring interface end finalization class asm mod case on shr shl of register xorwrite threadvar try record near stored constructor stdcall inline div out or procedure";var e="safecall stdcall pascal stored const implementation finalization except to finally program inherited override then exports string read not mod shr try div shl set library message packed index for near overload label downto exit public goto interface asm on of constructor or private array unit raise destructor var type until function else external with case default record while protected property procedure published and cdecl do threadvar file in if end virtual write far out begin repeat nil initialization object uses resourcestring class register xorwrite inline static";var a={cN:"comment",b:"{",e:"}",r:0};var g={cN:"comment",b:"\\(\\*",e:"\\*\\)",r:10};var c={cN:"string",b:"'",e:"'",c:[{b:"''"}],r:0};var d={cN:"string",b:"(#\\d+)+"};var h={cN:"function",bWK:true,e:"[:;]",k:"function constructor|10 destructor|10 procedure|10",c:[{cN:"title",b:b.IR},{cN:"params",b:"\\(",e:"\\)",k:f,c:[c,d]},a,g]};return{cI:true,dM:{k:f,i:'("|\\$[G-Zg-z]|\\/\\*|</)',c:[a,g,b.CLCM,c,d,b.NM,h,{cN:"class",b:"=\\bclass\\b",e:"end;",k:e,c:[c,d,a,g,b.CLCM,h]}]}}}(hljs);hljs.LANGUAGES.vbscript=function(a){return{cI:true,dM:{k:{keyword:"call class const dim do loop erase execute executeglobal exit for each next function if then else on error option explicit new private property let get public randomize redim rem select case set stop sub while wend with end to elseif is or xor and not class_initialize class_terminate default preserve in me byval byref step resume goto",built_in:"lcase month vartype instrrev ubound setlocale getobject rgb getref string weekdayname rnd dateadd monthname now day minute isarray cbool round formatcurrency conversions csng timevalue second year space abs clng timeserial fixs len asc isempty maths dateserial atn timer isobject filter weekday datevalue ccur isdate instr datediff formatdatetime replace isnull right sgn array snumeric log cdbl hex chr lbound msgbox ucase getlocale cos cdate cbyte rtrim join hour oct typename trim strcomp int createobject loadpicture tan formatnumber mid scriptenginebuildversion scriptengine split scriptengineminorversion cint sin datepart ltrim sqr scriptenginemajorversion time derived eval date formatpercent exp inputbox left ascw chrw regexp server response request cstr err",literal:"true false null nothing empty"},i:"//",c:[{cN:"string",b:'"',e:'"',i:"\\n",c:[{b:'""'}],r:0},{cN:"comment",b:"'",e:"$"},a.CNM]}}}(hljs);hljs.LANGUAGES.dos=function(a){return{cI:true,dM:{k:{flow:"if else goto for in do call exit not exist errorlevel defined equ neq lss leq gtr geq",keyword:"shift cd dir echo setlocal endlocal set pause copy",stream:"prn nul lpt3 lpt2 lpt1 con com4 com3 com2 com1 aux",winutils:"ping net ipconfig taskkill xcopy ren del"},c:[{cN:"envvar",b:"%%[^ ]"},{cN:"envvar",b:"%[^ ]+?%"},{cN:"envvar",b:"![^ ]+?!"},{cN:"number",b:"\\b\\d+",r:0},{cN:"comment",b:"@?rem",e:"$"}]}}}(hljs);hljs.LANGUAGES.apache=function(a){var b={cN:"number",b:"[\\$%]\\d+"};return{cI:true,dM:{k:{keyword:"acceptfilter acceptmutex acceptpathinfo accessfilename action addalt addaltbyencoding addaltbytype addcharset adddefaultcharset adddescription addencoding addhandler addicon addiconbyencoding addiconbytype addinputfilter addlanguage addmoduleinfo addoutputfilter addoutputfilterbytype addtype alias aliasmatch allow allowconnect allowencodedslashes allowoverride anonymous anonymous_logemail anonymous_mustgiveemail anonymous_nouserid anonymous_verifyemail authbasicauthoritative authbasicprovider authdbduserpwquery authdbduserrealmquery authdbmgroupfile authdbmtype authdbmuserfile authdefaultauthoritative authdigestalgorithm authdigestdomain authdigestnccheck authdigestnonceformat authdigestnoncelifetime authdigestprovider authdigestqop authdigestshmemsize authgroupfile authldapbinddn authldapbindpassword authldapcharsetconfig authldapcomparednonserver authldapdereferencealiases authldapgroupattribute authldapgroupattributeisdn authldapremoteuserattribute authldapremoteuserisdn authldapurl authname authnprovideralias authtype authuserfile authzdbmauthoritative authzdbmtype authzdefaultauthoritative authzgroupfileauthoritative authzldapauthoritative authzownerauthoritative authzuserauthoritative balancermember browsermatch browsermatchnocase bufferedlogs cachedefaultexpire cachedirlength cachedirlevels cachedisable cacheenable cachefile cacheignorecachecontrol cacheignoreheaders cacheignorenolastmod cacheignorequerystring cachelastmodifiedfactor cachemaxexpire cachemaxfilesize cacheminfilesize cachenegotiateddocs cacheroot cachestorenostore cachestoreprivate cgimapextension charsetdefault charsetoptions charsetsourceenc checkcaseonly checkspelling chrootdir contentdigest cookiedomain cookieexpires cookielog cookiename cookiestyle cookietracking coredumpdirectory customlog dav davdepthinfinity davgenericlockdb davlockdb davmintimeout dbdexptime dbdkeep dbdmax dbdmin dbdparams dbdpersist dbdpreparesql dbdriver defaulticon defaultlanguage defaulttype deflatebuffersize deflatecompressionlevel deflatefilternote deflatememlevel deflatewindowsize deny directoryindex directorymatch directoryslash documentroot dumpioinput dumpiologlevel dumpiooutput enableexceptionhook enablemmap enablesendfile errordocument errorlog example expiresactive expiresbytype expiresdefault extendedstatus extfilterdefine extfilteroptions fileetag filterchain filterdeclare filterprotocol filterprovider filtertrace forcelanguagepriority forcetype forensiclog gracefulshutdowntimeout group header headername hostnamelookups identitycheck identitychecktimeout imapbase imapdefault imapmenu include indexheadinsert indexignore indexoptions indexorderdefault indexstylesheet isapiappendlogtoerrors isapiappendlogtoquery isapicachefile isapifakeasync isapilognotsupported isapireadaheadbuffer keepalive keepalivetimeout languagepriority ldapcacheentries ldapcachettl ldapconnectiontimeout ldapopcacheentries ldapopcachettl ldapsharedcachefile ldapsharedcachesize ldaptrustedclientcert ldaptrustedglobalcert ldaptrustedmode ldapverifyservercert limitinternalrecursion limitrequestbody limitrequestfields limitrequestfieldsize limitrequestline limitxmlrequestbody listen listenbacklog loadfile loadmodule lockfile logformat loglevel maxclients maxkeepaliverequests maxmemfree maxrequestsperchild maxrequestsperthread maxspareservers maxsparethreads maxthreads mcachemaxobjectcount mcachemaxobjectsize mcachemaxstreamingbuffer mcacheminobjectsize mcacheremovalalgorithm mcachesize metadir metafiles metasuffix mimemagicfile minspareservers minsparethreads mmapfile mod_gzip_on mod_gzip_add_header_count mod_gzip_keep_workfiles mod_gzip_dechunk mod_gzip_min_http mod_gzip_minimum_file_size mod_gzip_maximum_file_size mod_gzip_maximum_inmem_size mod_gzip_temp_dir mod_gzip_item_include mod_gzip_item_exclude mod_gzip_command_version mod_gzip_can_negotiate mod_gzip_handle_methods mod_gzip_static_suffix mod_gzip_send_vary mod_gzip_update_static modmimeusepathinfo multiviewsmatch namevirtualhost noproxy nwssltrustedcerts nwsslupgradeable options order passenv pidfile protocolecho proxybadheader proxyblock proxydomain proxyerroroverride proxyftpdircharset proxyiobuffersize proxymaxforwards proxypass proxypassinterpolateenv proxypassmatch proxypassreverse proxypassreversecookiedomain proxypassreversecookiepath proxypreservehost proxyreceivebuffersize proxyremote proxyremotematch proxyrequests proxyset proxystatus proxytimeout proxyvia readmename receivebuffersize redirect redirectmatch redirectpermanent redirecttemp removecharset removeencoding removehandler removeinputfilter removelanguage removeoutputfilter removetype requestheader require rewritebase rewritecond rewriteengine rewritelock rewritelog rewriteloglevel rewritemap rewriteoptions rewriterule rlimitcpu rlimitmem rlimitnproc satisfy scoreboardfile script scriptalias scriptaliasmatch scriptinterpretersource scriptlog scriptlogbuffer scriptloglength scriptsock securelisten seerequesttail sendbuffersize serveradmin serveralias serverlimit servername serverpath serverroot serversignature servertokens setenv setenvif setenvifnocase sethandler setinputfilter setoutputfilter ssienableaccess ssiendtag ssierrormsg ssistarttag ssitimeformat ssiundefinedecho sslcacertificatefile sslcacertificatepath sslcadnrequestfile sslcadnrequestpath sslcarevocationfile sslcarevocationpath sslcertificatechainfile sslcertificatefile sslcertificatekeyfile sslciphersuite sslcryptodevice sslengine sslhonorciperorder sslmutex ssloptions sslpassphrasedialog sslprotocol sslproxycacertificatefile sslproxycacertificatepath sslproxycarevocationfile sslproxycarevocationpath sslproxyciphersuite sslproxyengine sslproxymachinecertificatefile sslproxymachinecertificatepath sslproxyprotocol sslproxyverify sslproxyverifydepth sslrandomseed sslrequire sslrequiressl sslsessioncache sslsessioncachetimeout sslusername sslverifyclient sslverifydepth startservers startthreads substitute suexecusergroup threadlimit threadsperchild threadstacksize timeout traceenable transferlog typesconfig unsetenv usecanonicalname usecanonicalphysicalport user userdir virtualdocumentroot virtualdocumentrootip virtualscriptalias virtualscriptaliasip win32disableacceptex xbithack",literal:"on off"},c:[a.HCM,{cN:"sqbracket",b:"\\s\\[",e:"\\]$"},{cN:"cbracket",b:"[\\$%]\\{",e:"\\}",c:["self",b]},b,{cN:"tag",b:"</?",e:">"},a.QSM]}}}(hljs);hljs.LANGUAGES.cpp=function(a){var b={keyword:"false int float while private char catch export virtual operator sizeof dynamic_cast|10 typedef const_cast|10 const struct for static_cast|10 union namespace unsigned long throw volatile static protected bool template mutable if public friend do return goto auto void enum else break new extern using true class asm case typeid short reinterpret_cast|10 default double register explicit signed typename try this switch continue wchar_t inline delete alignof char16_t char32_t constexpr decltype noexcept nullptr static_assert thread_local restrict _Bool complex",built_in:"std string cin cout cerr clog stringstream istringstream ostringstream auto_ptr deque list queue stack vector map set bitset multiset multimap unordered_set unordered_map unordered_multiset unordered_multimap array shared_ptr"};return{dM:{k:b,i:"</",c:[a.CLCM,a.CBLCLM,a.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},a.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:b,r:10,c:["self"]}]}}}(hljs);
