@@ -23,6 +23,7 @@
 <link href="/Covoiturage/Content/card.css" rel="stylesheet">
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<link href="/Covoiturage/Content/fontawesome/css/all.css" rel="stylesheet"> <!--load all styles -->
 
 <!-- Template Main CSS File -->
 <link href="/Covoiturage/Content/css/style.css" rel="stylesheet">

@@ -30,21 +30,21 @@
 					<div class="col-md-6 col-sm-6 col-xs-12">
 						<div class="well-left">
 							<div class="single-well">
-								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Ajouter une offre</button>
+								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" style="background-color: #3EC1D5; border-color: #3EC1D5;"><i class="fas fa-plus"></i> offre</button>
 							</div>
 						</div>
 					</div>
 					<!-- single-well end-->
 					<div class="col-md-6 col-sm-6 col-xs-12">
 						<div class="well-middle">
-							<div class="single-well">
-								<form class="search-course">
-									<input type="search" name="search" id="search_course" placeholder="rechercher une offre..." />
-									<button type="submit">
-										<i class="material-icons">Rechercher</i>
+							<form class="form-inline">
+								<div class="form-group">
+									<input type="search" name="search" id="search_course" class="form-control" placeholder="rechercher une offre..." />
+									<button type="submit" class="form-control btn btn-default" style="background-color: #3EC1D5;">
+										<i class="fas fa-search"></i>
 									</button>
-								</form>
-							</div>
+								</div>
+							</form>
 						</div>
 					</div>
 					<!-- End col-->
@@ -128,7 +128,7 @@
 											buttons: {
 												confirm: function () {
 													axios.post(\'http://localhost/Covoiturage/api/offre/delete.php\', {
-														id: '.$id.'
+														id: ' . $id . '
 													})
 													.then(function(response) {
 														console.log(response);
@@ -230,8 +230,8 @@
 						</form>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-						<button type="button" id="saveData" class="btn btn-primary">Enregistrer</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal" style="background-color: red; border-color: red;"><i class="far fa-window-close"></i></button>
+						<button type="button" id="saveData" class="btn btn-primary" style="background-color: #3EC1D5; border-color: #3EC1D5;"><i class="fas fa-save"></i></button>
 					</div>
 				</div>
 			</div>
@@ -280,8 +280,8 @@
 						</form>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-						<button type="button" id="saveDataEdit" class="btn btn-primary">Enregistrer</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal" style="background-color: red; border-color: red;"><i class="far fa-window-close"></i></button>
+						<button type="button" id="saveDataEdit" class="btn btn-primary" style="background-color: #3EC1D5; border-color: #3EC1D5;"><i class="fas fa-save"></i></button>
 					</div>
 				</div>
 			</div>
