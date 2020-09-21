@@ -1,7 +1,7 @@
 <div class="container d-flex">
 
     <div class="logo mr-auto">
-        <h1 class="text-light"><a href="/memoireAmina/"><span>Co</span>Voiturage</a></h1>
+        <h1 class="text-light"><a href="/Covoiturage/"><span>Co</span>Voiturage</a></h1>
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
     </div>
@@ -20,7 +20,7 @@
                     <li><a href="#">Profil</a></li>
                     <li class="drop-down"><a href="#">Offres</a>
                         <ul>
-                            <li><a href="/memoireAmina/Conducteur/index.php">mes offres</a></li>
+                            <li><a href="/Covoiturage/Conducteur/index.php">mes offres</a></li>
                             <li><a href="#">Mes voitures</a></li>
                             <!-- <li><a href="#">Mon historique</a></li>
                             <li><a href="#">Mes trajets</a></li>

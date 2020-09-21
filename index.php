@@ -31,7 +31,7 @@
             <div class="well-left">
               <div class="single-well">
                 <a href="#">
-                  <img src="/memoireAmina/Content/img/about/1.jpg" alt="">
+                  <img src="/Covoiturage/Content/img/about/1.jpg" alt="">
                 </a>
               </div>
             </div>
@@ -180,18 +180,18 @@
 
 
   <!-- Vendor JS Files -->
-  <script src="/memoireAmina/Content/vendor/jquery/jquery.min.js"></script>
-  <script src="/memoireAmina/Content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="/memoireAmina/Content/vendor/jquery.easing/jquery.easing.min.js"></script>
-  <script src="/memoireAmina/Content/vendor/php-email-form/validate.js"></script>
-  <script src="/memoireAmina/Content/vendor/appear/jquery.appear.js"></script>
-  <script src="/memoireAmina/Content/vendor/knob/jquery.knob.js"></script>
-  <script src="/memoireAmina/Content/vendor/parallax/parallax.js"></script>
-  <script src="/memoireAmina/Content/vendor/wow/wow.min.js"></script>
-  <script src="/memoireAmina/Content/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="/memoireAmina/Content/vendor/nivo-slider/js/jquery.nivo.slider.js"></script>
-  <script src="/memoireAmina/Content/vendor/owl.carousel/owl.carousel.min.js"></script>
-  <script src="/memoireAmina/Content/vendor/venobox/venobox.min.js"></script>
+  <script src="/Covoiturage/Content/vendor/jquery/jquery.min.js"></script>
+  <script src="/Covoiturage/Content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/Covoiturage/Content/vendor/jquery.easing/jquery.easing.min.js"></script>
+  <script src="/Covoiturage/Content/vendor/php-email-form/validate.js"></script>
+  <script src="/Covoiturage/Content/vendor/appear/jquery.appear.js"></script>
+  <script src="/Covoiturage/Content/vendor/knob/jquery.knob.js"></script>
+  <script src="/Covoiturage/Content/vendor/parallax/parallax.js"></script>
+  <script src="/Covoiturage/Content/vendor/wow/wow.min.js"></script>
+  <script src="/Covoiturage/Content/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="/Covoiturage/Content/vendor/nivo-slider/js/jquery.nivo.slider.js"></script>
+  <script src="/Covoiturage/Content/vendor/owl.carousel/owl.carousel.min.js"></script>
+  <script src="/Covoiturage/Content/vendor/venobox/venobox.min.js"></script>
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <!-- Template Main JS File -->
   <script src="Scripts/js/main.js"></script>

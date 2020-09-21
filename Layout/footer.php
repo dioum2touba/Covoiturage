@@ -52,12 +52,12 @@
               <div class="footer-head">
                 <h4>Instagram</h4>
                 <div class="flicker-img">
-                  <a href="#"><img src="/memoireAmina/Content/img/portfolio/1.jpg" alt=""></a>
-                  <a href="#"><img src="/memoireAmina/Content/img/portfolio/2.jpg" alt=""></a>
-                  <a href="#"><img src="/memoireAmina/Content/img/portfolio/3.jpg" alt=""></a>
-                  <a href="#"><img src="/memoireAmina/Content/img/portfolio/4.jpg" alt=""></a>
-                  <a href="#"><img src="/memoireAmina/Content/img/portfolio/5.jpg" alt=""></a>
-                  <a href="#"><img src="/memoireAmina/Content/img/portfolio/6.jpg" alt=""></a>
+                  <a href="#"><img src="/Covoiturage/Content/img/portfolio/1.jpg" alt=""></a>
+                  <a href="#"><img src="/Covoiturage/Content/img/portfolio/2.jpg" alt=""></a>
+                  <a href="#"><img src="/Covoiturage/Content/img/portfolio/3.jpg" alt=""></a>
+                  <a href="#"><img src="/Covoiturage/Content/img/portfolio/4.jpg" alt=""></a>
+                  <a href="#"><img src="/Covoiturage/Content/img/portfolio/5.jpg" alt=""></a>
+                  <a href="#"><img src="/Covoiturage/Content/img/portfolio/6.jpg" alt=""></a>
                 </div>
               </div>
             </div>

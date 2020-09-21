@@ -21,7 +21,7 @@
 				<div class="row">
 					<div class="col-md-12 col-sm-12 col-xs-12">
 						<div class="section-headline text-center">
-							<h2>About eBusiness</h2>
+							<h2>Gestion des offres</h2>
 						</div>
 					</div>
 				</div>
@@ -39,9 +39,9 @@
 						<div class="well-middle">
 							<div class="single-well">
 								<form class="search-course">
-									<input type="search" name="search" id="search_course" placeholder="Search Courses..." />
+									<input type="search" name="search" id="search_course" placeholder="rechercher une offre..." />
 									<button type="submit">
-										<i class="material-icons">search</i>
+										<i class="material-icons">Rechercher</i>
 									</button>
 								</form>
 							</div>
@@ -118,7 +118,7 @@
 									</div>
 								</div>
 								
-								<script src="/memoireAmina/Content/vendor/jquery/jquery.min.js"></script>
+								<script src="/Covoiturage/Content/vendor/jquery/jquery.min.js"></script>
 								<script>
 								$(document).ready(function() {
 									$("#' . $deleteOffre . '").click(function() {
@@ -127,7 +127,7 @@
 											content: \'Êtes-vous de vouloir le supprimer!\',
 											buttons: {
 												confirm: function () {
-													axios.post(\'http://localhost/memoireAmina/api/offre/delete.php\', {
+													axios.post(\'http://localhost/Covoiturage/api/offre/delete.php\', {
 														id: '.$id.'
 													})
 													.then(function(response) {
@@ -155,7 +155,7 @@
 										$.ajax({
 											type: "Get",
 											dataType: "JSON",
-											url: ("http://localhost/memoireAmina/api/offre/read_one.php?id=' . $id . '"),
+											url: ("http://localhost/Covoiturage/api/offre/read_one.php?id=' . $id . '"),
 											success: function(response) {
 												console.log("Response select succes: ")
 												console.log(response);
@@ -293,18 +293,18 @@
 
 
 	<!-- Vendor JS Files -->
-	<script src="/memoireAmina/Content/vendor/jquery/jquery.min.js"></script>
-	<script src="/memoireAmina/Content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-	<script src="/memoireAmina/Content/vendor/jquery.easing/jquery.easing.min.js"></script>
-	<script src="/memoireAmina/Content/vendor/php-email-form/validate.js"></script>
-	<script src="/memoireAmina/Content/vendor/appear/jquery.appear.js"></script>
-	<script src="/memoireAmina/Content/vendor/knob/jquery.knob.js"></script>
-	<script src="/memoireAmina/Content/vendor/parallax/parallax.js"></script>
-	<script src="/memoireAmina/Content/vendor/wow/wow.min.js"></script>
-	<script src="/memoireAmina/Content/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-	<script src="/memoireAmina/Content/vendor/nivo-slider/js/jquery.nivo.slider.js"></script>
-	<script src="/memoireAmina/Content/vendor/owl.carousel/owl.carousel.min.js"></script>
-	<script src="/memoireAmina/Content/vendor/venobox/venobox.min.js"></script>
+	<script src="/Covoiturage/Content/vendor/jquery/jquery.min.js"></script>
+	<script src="/Covoiturage/Content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="/Covoiturage/Content/vendor/jquery.easing/jquery.easing.min.js"></script>
+	<script src="/Covoiturage/Content/vendor/php-email-form/validate.js"></script>
+	<script src="/Covoiturage/Content/vendor/appear/jquery.appear.js"></script>
+	<script src="/Covoiturage/Content/vendor/knob/jquery.knob.js"></script>
+	<script src="/Covoiturage/Content/vendor/parallax/parallax.js"></script>
+	<script src="/Covoiturage/Content/vendor/wow/wow.min.js"></script>
+	<script src="/Covoiturage/Content/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+	<script src="/Covoiturage/Content/vendor/nivo-slider/js/jquery.nivo.slider.js"></script>
+	<script src="/Covoiturage/Content/vendor/owl.carousel/owl.carousel.min.js"></script>
+	<script src="/Covoiturage/Content/vendor/venobox/venobox.min.js"></script>
 	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
@@ -317,7 +317,7 @@
 			});
 
 			$("#saveData").click(function() {
-				axios.post('http://localhost/memoireAmina/api/offre/create.php', {
+				axios.post('http://localhost/Covoiturage/api/offre/create.php', {
 						nomTrajet: $('#NomTrajet').val(),
 						date_heure: $('#Date_Heure').val(),
 						nombrePlace: $('#NombrePlace').val(),
@@ -335,7 +335,7 @@
 			});
 
 			$("#saveDataEdit").click(function() {
-				axios.post('http://localhost/memoireAmina/api/offre/update.php ', {
+				axios.post('http://localhost/Covoiturage/api/offre/update.php ', {
 						id: $('#idEdit').val(),
 						nomTrajet: $('#NomTrajetEdit').val(),
 						date_heure: $('#Date_HeureEdit').val(),
@@ -358,7 +358,7 @@
 				$.ajax({
 					type: "Get",
 					dataType: "JSON",
-					url: 'http://localhost/memoireAmina/api/offre/getVoitureById.php?imm=' + this.value,
+					url: 'http://localhost/Covoiturage/api/offre/getVoitureById.php?imm=' + this.value,
 					success: function(response) {
 						console.log("Response select succes: ")
 						console.log(response);
@@ -377,7 +377,7 @@
 				$.ajax({
 					type: "Get",
 					dataType: "JSON",
-					url: 'http://localhost/memoireAmina/api/offre/getVoitureById.php?imm=' + this.value,
+					url: 'http://localhost/Covoiturage/api/offre/getVoitureById.php?imm=' + this.value,
 					success: function(response) {
 						console.log("Response select succes: ")
 						console.log(response);
