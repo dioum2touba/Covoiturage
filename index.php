@@ -126,7 +126,6 @@
                             <p class="card-title">Nom du trajet: ' . $NomTrajet . '</p>
                             <p class="card-title">Conducteur: ' . $conducteur . '</p>
                             <p class="card-title">Voiture: ' . $voiture_bis . '</p>
-                            <a  id="' . $reservation . '" class="btn btn-primary btn-sm">Réservation</a>
                             <input type="hidden" id="' . $editInput . '" name="' . $editInput . '" value="' . $id . '" />
                           </div>
                           </div>
@@ -136,28 +135,7 @@
                             <div class="card-body text-center mt-4">
                               <h4 class="card-title">Sunlimetech</h4>
                               <p class="card-text">This is basic card with image on top, title, description and button.This is basic card with image on top, title, description and button.This is basic card with image on top, title, description and button.</p>
-                              <ul class="list-inline">
-                                <li class="list-inline-item">
-                                  <a class="social-icon text-xs-center" target="_blank" href="#">
-                                    <i class="fa fa-facebook"></i>
-                                  </a>
-                                </li>
-                                <li class="list-inline-item">
-                                  <a class="social-icon text-xs-center" target="_blank" href="#">
-                                    <i class="fa fa-twitter"></i>
-                                  </a>
-                                </li>
-                                <li class="list-inline-item">
-                                  <a class="social-icon text-xs-center" target="_blank" href="#">
-                                    <i class="fa fa-skype"></i>
-                                  </a>
-                                </li>
-                                <li class="list-inline-item">
-                                  <a class="social-icon text-xs-center" target="_blank" href="#">
-                                    <i class="fa fa-google"></i>
-                                  </a>
-                                </li>
-                              </ul>
+                              <a  id="' . $reservation . '" class="btn btn-primary btn-sm">Réservation</a>
                             </div>
                           </div>
                         </div>

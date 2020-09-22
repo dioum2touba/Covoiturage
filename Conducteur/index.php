@@ -149,7 +149,7 @@
 									})
 
 									$("#' . $editOffre . '").click(function() {
-										var value= $("#' . $editInput . '").val();
+										
 										$(\'#exampleModalEdit\').modal(\'show\');
 										console.log("Response select: Debut")
 										$.ajax({
@@ -354,7 +354,7 @@
 			});
 
 			$("#Voiture").on('change', function() {
-				console.log("Response select: Debut")
+				console.log("Response select: Changé")
 				$.ajax({
 					type: "Get",
 					dataType: "JSON",
